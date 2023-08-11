@@ -1,0 +1,15 @@
+Se creará una base de datos llamada “baseCRUD”.
+✓ Se agregará una colección llamada “mascotas”
+✓ Se agregarán 3 mascotas con las propiedades: nombre, especie, edad
+✓ Se buscarán mascotas por su especie
+✓ Contar el número de mascotas totales agregadas.
+
+->use baseCRUD
+
+->db.createCollection('pets')
+
+->db.pets.insertMany([{nombre:"Vaquita",especie:"perro",edad:2},{nombre:"Doki",especie:"perro",edad:3},{nombre:"Luna",especie:"gato",edad:2},{nombre:"Simba",especie:"gato",edad:2},{nombre:"Panda",especie:"Jirafa",edad:2}])
+
+->db.pets.find({especie:"Jirafa"})
+
+->db.pets.estimatedDocumentCount()

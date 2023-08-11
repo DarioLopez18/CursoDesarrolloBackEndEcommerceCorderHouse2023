@@ -1,0 +1,26 @@
+Encuentra los errores:
+
+A continuacion se te presentara una lista de consultas y una descripcion del resultado que se espera.
+
+¿La consulta es correcta? En caso contrario ¿Cual es la sintaxis correcta?
+
+✓Insertar múltiples mascotas:
+
+db.pets.insertOne([{name:”aletas”,specie:”ﬁsh”},{name:”Doby”,{specie:”dog”}}])
+
+-> correcta: db.pets.insertMany([{nombre:"aletas",especie:"ﬁsh"},{nombre:"Doby",especie:"dog"}])
+
+✓Obtener sólo las últimas 5 mascotas que sean peces
+
+db.pets.ﬁnd({specie:"ﬁsh"}).limit(5)
+
+->db.pets.find({especie:"ﬁsh"}).sort({id:-1}).limit(5)
+
+✓Obtener sólo el nombre de las últimas 5 mascotas cuya edad sea menor de 10
+años:
+
+db.pets.ﬁnd(age:{ $gte:{10}},{name:1}).sort(age:1).limit(5)
+
+->db.pets.ﬁnd(age:{ $lte:{10}},{name:1}).sort(age:-1).limit(5)
+
+fin

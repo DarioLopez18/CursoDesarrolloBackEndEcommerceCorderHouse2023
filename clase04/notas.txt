@@ -1,0 +1,150 @@
+Programacion sincrónica y asincrónica
+
+->Funciones en JavaScript
+->Callbacks
+->Promesas
+->Sincronismo vs asincronismo
+
+Objetivos de la clase:
+
+->Repasar las funciones en JavaScript
+->Comprender un callbakc y como se relacionan las funciones con estos
+->Usar promesas en JavaScript
+->Concretar la diferencia entre programación sincrónica y asincrónica
+
+Funciones
+    ->Tradicionales
+        ->Declaradas bajo la sintaxis
+            function nombre(args){
+                return args;
+            }
+    ->Arrow function 
+        ->Declaradas bajo la sintaxis
+            const nombre = (args)=>return args
+    ->Funcion definida
+        ->Cuenta con un nombre especifico, usualmente se usan para NO reasignarse
+    ->Función anónima 
+        ->No cuenta con nombre, sólo implementación. 
+        ->Son usualmente usadas para reasignarse o utilizarse en un proceso sin almacenarse en memoria.
+
+Funciones en JavaScript
+
+Recordemos que las funciones son bloques de código que pueden ser llamados en diferentes momentos de la ejecucion de nuestro programa.Pueden tener su
+identificador al declararse, o ser anónimas. Además, estas son reasignables.
+
+Enviando una función a otra funcón->CALLBACKS
+
+Un callback es una función como cualquier otra, la diferencia está en que esta se pasa como parámetro (argumento) para poder ser utilizado por otra función.
+
+Permite que entonces las funciones ejecuten operaciones adicionales dentro de si mismas. Cuando pasamos un callback,lo hacemos porque no siempre sabemos
+que queremos que se ejecute en cada caso de nuesta función.
+
+Algunos ejemplos donde has utilizado callbacks (aunque no lo creas) son:
+    ->El metodo onClick en frontend
+    ->El metodo foreach
+    ->el metodo map o filter
+
+Callbacks algunas convenciones:
+
+->El callback siempre es el ultimo parámetro
+->El callback suele ser una función que recibe dos parámetros
+->La funcion llama al callback al temrinar de ejecutar todas sus operaciones
+->Si la operacion fue exitosa, la funcion llamara al callback pasando null como primer parametro, y si genero algun resultado este se pasara como segundo
+parametro
+->Si la operacion resulto en un error, la funcion llamara al callback pasando el error obtenido como primer parametro
+
+Callbacks anidados: En algun momento el mundo laboral te exige hacer mas que solo una suma o una resta. Nos encontraremos con procesos que requieren 
+de mas pasos. Si nosotros trabajamos con callbacks, podemos encadenar un conjunto de operaciones secuenciales. 
+
+Así un callback, puede llamar a otro callbacks, y este puede llamar a otro y este a otro, y así sucesivamente.
+
+Mientras mas callbacks vamos anidando (segun el tamaño del proceso) vamos formando una pirámide horizontal. En nuestro código, a esto se le conoce como
+CALLBACK HELL (Pyramid of Doom)
+
+Vamos a ver una forma de solucionar los callbaks HELL
+
+Promesas
+
+Es un objeto especial que nos permitirá encapsular una operación, la cual reaccionará a dos posibles situaciones dentro de una promesa:
+    ->¿Que debería hacer si la promesa se cumple?
+    ->¿Que debería hacer si la promesa no se cumple?
+
+Estados de una promesa:
+
+Una promesa funciona muy similar al mundo real:
+
+Al prometerse algo, es una promesa en estado pendiente (pending), no sabemos cuando se resolverá esa promesa. Sin embargo, cuando llega el momento se 
+nos notifica si la promesa se cumplió (Fulfilled), tambien lo encontramos como resolved. O tal vez, a pesar del tiempo, al final nos notifiquen que 
+la promesa no pudo cumplirse (Rejected)
+
+Promesas en JavaScript 
+    ->Fullfiled (cumplida)
+    ->Rejected (rechazada)
+
+Ahora que entendimos que hay dos formas de resolver una promesa (Resolved/Fulfilled o Rejected), debemos aprender como utilizar estos estados:
+
+Promise (pending)
+    ->Resolved
+        ->.then()
+    ->Rejected
+        ->.catch()
+
+->Ejecutaremos la funcion que acabamos de crear para que se ejecute la promesa. 
+->Utilizaremos .then para recibir el caso en que la promesa si se cumple
+->utilizaremos .catch para recibir el caso en que no se cumple
+
+Encadenamiento de promesas:
+
+Siempre que coloquemos un return dentro de un .then automáticamente el resultado se cumple en otra promesa y puede ser encadenada en otro .then y así 
+sucesivamente hasta finalizar el proceso. 
+
+Si en alguno de los .then algo llegara a salir mal, solo se necesitara un catch para atraparlo.
+
+Sincronismo vs asincronismo
+
+Sincronismo
+
+Hace algunos años, cuando se te enseñó a programar, entendiste que las instrucciones se ejecutaban en cascada, es decir, que la tarea 1 debía finalizar
+para que pudiera comenzar la ejecución de la tarea 2 y la tarea 2 finalizar para ejecutar la tarea 3 etc.
+
+->En todo momento se están ejecutando las instrucciones de una sola de las funciones a la vez. O sea, debe finalizar una función para poder continuar con la otra
+->El fin de una función marca el inicio de la siguiente y el fin de esta, el inicio de la que sigue, y así sucesivamente, describiendo una secuencia que
+ocurre en una única linea del tiempo.
+
+Las operaciones sincronicas son bloqueantes, esto significa que las otras tareas no pueden comenzar a ejecutarse hasta que la primera no haya terminado de
+ejecutarse.
+
+Asincronismo 
+
+Si lo que buscamos es que las tareas trabajen en 'paralelo' entonces debemos buscar la manera de programar instrucciones asíncronas, lo cual significa que
+cada una seguirá el hilo de resolución que considere su ritmo. 
+
+Hay que ser cautelosos al utilizarsas, ya que:
+    ->No controlamos cuanddo terminará, solo cuando comienza.
+
+
+En el ejemplo no se bloquea la ejecucion normal del programa y se permite que este se siga ejecutando. La ejecucion de la operacion de escritura comienza e
+inmediatamente cede el control a la siguiente instruccion, que escribe por pantalla el mensaje de finalizacion.
+
+Las operaciones asíncronas son no bloqueantes, esto significa que las tareas pueden irse ejecutando en paralelo y no esperar por las demás tareas. Así la tarea
+numero 3 podría terminar incluso antes que la tarea número 1.
+
+Async y await
+
+Problemas con .then y .catch
+
+Cuando necesitamos más que solo una operacion para poder ejecutar algo asíncrono, no basta con el uso de una promesa solamente, sino que necesitamos un 
+entorno completo para poder ejecutar dichas operaciones .then en este caso sólo nos sirve para encadenar las promesas y obtener resultados, pero no nos
+permite un entorno completo asíncrono para trabajar, por lo cual nos obliga a trabajar TODO dentro de ese scope.
+
+Además el principal problema de los .then y .catch son su encapsulamiento excesivo, impidiendo o limitando que podamos acceder a los recursos de 
+algunos resultados, variables, etc.
+
+Async / Await 
+
+Surge entonces en JavaScript para Async - Await, unas palabras reservadas que, trabajando juntas, permiten gestionar un entorno asíncrono, resolviendo
+las limitantes del .then y .catch
+
+->Async se colocará al inicio de la función, indicando que todo el cuerpo de esa función deberá ejecutarse de manera asincrona.
+->await servirá para esperar el resultado de la promesa y extraer el resultado
+->Al ser operaciones que podrían salir bien pero tambien mal, es importante encerrar el cuerpo en un bloque try catch 

@@ -1,0 +1,158 @@
+Mongo avanzado
+
+->Teoria de indexacion
+
+->Manejo de population en Mongo
+
+->Comprender el funcionamiento de una indexacion en MongoDB
+
+->Analizar documentos para definir sus indices
+
+->Conocer la operacion "populate" de mongoose
+
+->Utilizacion de middleware en mongoose
+
+->DBAAS: Database as a Service. Sirve para poder contar con un alojamiento de nuestra base de datos desde un
+servidor en la nube, para evitar hacer almacenamiento fisicos propios. 
+
+->Mongo atlas: DBaaS pensada para MongoDB para setear Cluster y alojar multiples bases de datos. 
+
+->Cliente CLI: Cliente que conecta a la base de datos desde una terminal de comandos.
+
+->Cliente UI: Cliente que conecta a la base de datos a partir de un programa de escritorio, como MongoDB Compass
+
+->Cliente WEB: Cliente que conecta a la base de datos a partir del navegador, como la gestion a partir de Atlas.
+
+->Cliente APP: Client que conecta dentro de nuestro sistema de backend. Como nuestro programa de nodejs con mongoose.
+
+Mongoose: ODM utilizado para gestionar schemas definidos para mantener un control en la flexibilidad de MongoDB.
+Ademas de otras operaciones importantes para el manejo de bases de datos. 
+
+Mongo DB
+    ->indexacion   
+        ->¿Que es?
+Mongoose
+    ->Populate 
+        ->funcionamiento
+    ->middleware
+        ->"pre"
+
+Teoria de indexacion:
+
+Indexacion:
+
+Es un recurso utilizado en MongoDB para poder hacer consultas mucho mas rapidas.
+
+Este nos permitira tener una referencia previa al momento de buscar un documento, con el fin de evitar recorrer
+toda la collecion,documento por documento hasta encontrar dicho valor.
+
+El indice se asocia a un atributo del documento y permite que las busquedas se hagan desde puntos especificos,
+evitando el recorrido completo de la coleccion.
+
+Hasta este momento nuestras consultas no repercuten en performance, debido a que los datos que consultamos son 
+muy pequeños,¿pero qué pasaría si comenzamos a incremenar el número de datos en neustra base?¿qué tanto afectan
+estas busquedas? 
+
+Prever un buen plan de indexacion evitará problemas de lentitud en las consultas y se considerará una práctica
+necesaria a nivel enterprise, al momento de configurar los schemas de nuestros distintos modelos ¡Hagamos habito 
+de usarlos!
+
+Una clara diferencia de performance: Es evidente que hay una reduccion en el tiempo de respuesta, y que esta mejora
+de performance será mucho mas notoria conforme el número de documentos crezca.
+
+Entonces, podemos crear indexacion de los campos que consideramos que pueden ocasionar problemas de lentitud dentro
+de nuestras busquedas.
+
+Parte de tu trabajo está en analizar los servicios que utiliza tu aplicativo, para poder desarrollar una 
+estrategia de indexacion adecuada a las busquedas que realicemos en la base de datos.
+
+Un indice no debe ser utilizado en todos los campos, solo deben ser utilizados en los campos que sabemos que 
+tienen repercusion en nuestras busquedas. 
+
+Colocar un indice en cada campo de cada documento significa alentar procesos de escritura en cada insert, asi 
+tambien como generar un almacenamiento adicional e innecesario en la base de datos.
+
+Funcionamiento interno de un indice
+
+Cuando creamos un indice sobre el campo de un documento, este campo es insertado en una "cinta métrica" donde se 
+colocará el valor indexado de manera ordenada (asi es, al final, un indice es meramente un ordenamiento).
+
+Asi, al momento de realizar una busqueda por valores indexados,mongo sera capaz de realizar una busqueda por 
+B-tree. Esto es lo que permite que la busqueda de un campo indexado no requiera recorrer la coleccion completa.
+
+Otras de las indexaciones mas comunes:
+
+->Indices compuestos (compound): se utiliza cuando requerimos utilizar mas de una indexacion y queremos definir 
+el orden con el cual se realiza el ordenamiento  (ordenando con 1 para ascendente y -1 para descendente, igual que
+con un sort:{campo:1,campo:-1})
+
+->Indices de multiple llave (multikey): se utiliza cuando requerimos hacer una indexacion de valores que se 
+encuentran de manera interna en un array.
+
+->Indices de texto (text): Se utiliza para poder basarse en busquedas de palabras especificas con el fin de 
+poder tomar referencia de un texto a partir de dichas palabras.
+
+->Indice geoespacial (geospatial): Se utiliza para almacenar data geoespacial de dos coordenadas, utiliza una 
+esfera 2d para poder trabajar los datos. 
+
+->Populations
+
+Una population implica obtener un documento referenciado dentro de otro documento, con el fin de obtener ambos
+en una sola busqueda.
+
+Consiste en almacenar el id de un documento, como propiedad de otro documento.A esto se le conoce como "Referencia"
+
+Populate hace referencia a poblar, de un id a un documento completo (referencia a la poblacion humana)
+
+Funcionamiento
+
+Al insertar un documento de tipo usuario que adopta mascotas, éste se crea con un ObjectId:
+{
+	name: Mauricio,
+	pets: [ ]
+	_id: ObjectId(“aaaaaaaa”)
+}
+
+Supongamos que ahora creamos dos mascotas, las cuales también tendrán su ObjectId:
+{
+	name: Orejitas
+	_id:ObjectId(“bbbbbbbb”)
+},
+{
+	name: Patitas
+	_id: ObjectId(“ccccccccc”)
+}
+
+3. Ahora, si este usuario quisiera “adoptar” las últimas dos mascotas, podríamos decir que estas mascotas deberían
+ estar dentro del array “pets” del usuario. Pero NO agregamos todo el documento.
+  sólo el _id que usaremos como “referencia” del documento
+{
+	name: Mauricio,
+	pets: [ {pet:ObjectId(“bbbbbbbb”)}, {pet:ObjectId(“ccccccccc”)}]
+	_id: ObjectId(“aaaaaaaa”)
+}
+
+4. La próxima vez que hagamos la búsqueda del usuario, podemos programarlo para que no sólo obtenga al usuario,
+sino sus referencias de mascotas también.
+
+El resultado final será la combinación del Documento usuario, más los documentos correspondientes a cada mascota
+
+Algunas cosas a considerar antes de comenzar con su uso 
+
+->populate es un método propio de mongoose, por lo que tenemos que instalarlo. 
+
+->Hay que tener siempre claro el nombre de la propiedad dentro del objeto, 
+así también como la referencia de la colección, para poder hacer un populate efectivo. 
+
+->Recuerda no guardar directamente el valor a referenciar en el _id, sino asignarle otro nombre 
+(se profundizará en el ejemplo)
+
+Pasos: 
+
+1->Tener un entorno asincrono.
+
+Por cuestiones de tiempo y complejidad, no levantaremos un servidor esta vez, sino que definiremos un entorno 
+asíncrono, para poder ejecutar las operaciones de Mongoose, sin tener que llamar a un endpoint.
+
+Además, aprovecharemos para realizar la operación “connect” de mongoose y conectar con la base de datos a 
+utilizar (Recomendable usar el link de conexión de Atlas)

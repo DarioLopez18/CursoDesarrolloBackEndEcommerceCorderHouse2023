@@ -1,0 +1,273 @@
+Express avanzado
+
+->Codigo de estado en HTTP
+
+->Métodos de petición
+
+Objetivos de la clase:
+
+->Conocer los status del protocolo HTTP
+->Comprender el concepto de API REST
+->Conocer los métodos POST,PUT,DELETE y utilizarlos con POSTMAN o ThunderClient
+->Profundizar de manera practica sobre los metodos POST,PUT,DELETE
+
+Glosario: 
+
+-> HTTP: Acrónimo para Hyper Text Transfer Protocol. Es el protocolo que nos permite comunicarnos a traves de internet.
+
+-> Protocolo: Conjunto de estandares y normas que deben seguirse para poder llevar a cabo una comunicacion correcta.
+
+-> Servidor: Sistema que permite recibir peticiones de otras computadoras y devolver una respuesta a estas.
+
+-> Modulo http: Modulo nativo de nodejs que permite programar un servidor http.
+
+-> Express: Framework de desarrollo para crear servidores de una manera escalable.
+
+-> EndPoint: Punto (ruta) especifico bajo el cual el servidor conectara con el servicio a proporcionar
+
+-> Metodo GET: Metodo del protocolo HTTP que permite indicar al servidor que deseamos hacer una consulta de obtencion de datos.
+
+-> Objeto req: Objeto usado dentro de los servicios de express para poder realizar consultas mas complejas. Sus principales componentes son:
+req.method, req.url, req.query, req.params, req.body
+
+Codigos de estado HTTP 
+    ->API REST
+        ->Arquitectura cliente-servidor, sin estado
+        ->Cacheable
+        ->Operaciones comunes
+        ->Interfaz uniforme
+        ->Utilizacion de Hiper Medios
+    ->Metodos de petición
+        ->POST
+        ->PUT                       POSTMAN
+        -> DELETE 
+
+Codigos de estados en HTTP
+
+¿Qué es un código de estado? Cuando realizamos alguna peticion al servidor mediante el protocolo HTTP, el servidor debe respondernos no solo con
+informacion, sino con un estado del proceso. Este es un codigo que nos permitira saber como se encuentra el proceso, o como finalizo.
+
+1xx -> Informational
+2xx -> Success
+3xx -> Redirection
+4xx -> Client error 
+5xx -> Server error
+
+¿Como funciona? 
+
+Cuando el srvidor responde con un codigo de estado, esto permite saber que ocurrio con la consulta que estabamos haciendo, y da informacion al cliente
+sobre que ha ocurrido.
+
+1xx -> Status 'Informativo' 
+2xx -> Status 'Ok' 
+3xx -> Status de redireccion
+        301-> Permanent Redirection
+        302-> Tempory Redirection
+        304-> Not Modified
+4xx -> Status de error de cliente
+        401-> Unauthorized error
+        403-> Forbidden
+        404-> Not found
+        405-> Method Not Allowed
+5xx -> Status de error en servidor
+        501-> Not implemented
+        502-> Bad Gateway
+        503-> Service Unavailable
+        504-> Gateway TimeOut
+
+Algunos de los mas importantes: 
+
+->200: Indica que la peticion se proceso correctamente. No hubo ningun tipo de inconveniente desde la consulta hasta la respuesta.
+->3xx: Hace referencia a redirecciones, cuando un recurso se ha movido o necesitamos apuntar a otro servicio.
+->400: Se utiliza cuando el cliente realiza alguna peticion que no cumpla con las reglas de comunicacion (una mala consulta, tal vez le falto enviar
+un dato, o venia en un formato incorrecto)
+->401: Se utiliza cuando el cliente no se ha identificado en el servidor bajo alguna credencial, no puede acceder al recurso.
+->403: Se utiliza cuando el cliente ya se identifico, pero sus credenciales no tienen el nivel de privilegios suficiente para acceder al recurso,
+es el equivalente a decir: 'Ya se quien eres, pero ni asi estas autorizado'
+->404: Se utiliza cuando el recurso no se ha encontrado, ya sea algun dato solicitado o incluso el endpoint mismo.
+->500: Se utiliza cuando algo ocurrio en el servidor, no necesariamente un error del cliente, sino un error o 'detalle' que no haya considerado el
+servidor a tratar con algun caso.
+
+Recuerda que tu eres el desarrollador del servidor, entonces es tu responsabilidad reconocer cuando colocar cada codigo de status. Si no configuramos
+nuestro servidor para devolver multiples status, entonces será mucho mas facil rastrear los problemas.
+
+Comprendiendo una API REST
+
+API (Application Programming Interface)
+
+Es un conjunto de definiciones y reglas que permiten que dos equipos puedan integrarse para trabajar juntos. La mejor analogia que hay para comprender 
+esto es que una API funge como un 'Contrato' entre el front y el back.
+
+La API permite entonces que se responden preguntas como:
+
+->¿A qué endpoint debo apuntar para la tarea que necesito? 
+
+->¿Qué método debo utilizar para ese recurso?
+
+->¿Que información debo enviar para realizar correctamente mi petición? 
+
+El cliente necesita algo del servidor, por lo que tiene que realizar una petición (reques) -> Para que la peticion llegue correctamente al servidor,
+deberá apuntar al endpoint correcto, con el metodo correcto, con la informacion correcta API -> El servidor recibe la peticion. Si se cumplieron todas
+las especificaciones de la API, el procesamiento se podrá llevar con exito Servidor
+
+El servidor da el resultado, cumplir con el contrato de la API asegura (en la mayoria de los casos) que habra un resultado satisfactorio. El cliente,
+al haber incumplido con lo que especificaba la API, podra obtener su resultado satisfactoriamente y utilizarlo.
+
+REST 
+
+Ya tenemos las reglas para comunicarse, ¿pero que tal la estructura del mensaje? cuando hacemos una peticion o cuando recibimos una respuesta, esta debe
+tener un formato. REST (REpresentational State Transfer) permite definir la estructura que deben tener los datos para poder transferirse. 
+
+La API respondia a preguntas sobre como comunicarse correctamente, sin embargo, REST define como debe ser el cuerpo del mensaje a transmitir. Puedes 
+llegar a hablar con el presidente si cumples con el protocolo HTTP y las reglas API, pero ¿De qué nos servirá si la forma en que estructuramos nuestro
+mensaje (REST) no es correcta? 
+
+Los dos formatos mas importantes son JSON y XML. La utilizacion de la estructura dependera de las necesidades del proyecto. Nosotros utilizaremos
+JSON. Como notaras, ¡Un JSON parece un objeto! Asi que es mucho mas amigable la sintaxis.
+
+Entonces una API REST es: Un modelo completo para tener perfectamente estipulados los protocolos, las reglas, e incluso la estructura de la informacion.
+con el fin de poder hacer un sistema de comunicacion completo entre las computadoras.
+
+        GET-POST-PUT-DELETE       HTTP REQUEST
+Client                       API                SERVER 
+        JSON|XML|HTML             HTTP RESPONSE
+
+¿Que caracteristica debe tener una API REST?
+
+Arquitectura Cliente-Servidor sin estado
+
+->Cada menasje HTTP contiene toda la informacion necesaria para comprender la peticion
+->Como resultado, ni el cliente ni el servidor necesitan recordar ningun estado de las comunicaciones entre mensajes
+->Esta restriccion mantiene al cliente y al servidor debilmente acoplados: el cliente no necesita conocer los detalles de implementacion del servidor
+y el servidor se 'despreocupa' de como son usados los datos que envia al cliente.
+
+
+Cacheable
+->Debe admitir un sistema de almacenamiento en Caché.
+->La infraestructura de red debe soportar una caché de varios niveles.
+->Este almacenamiento evita repetir varias conexiones entre el servidor y el cliente, en caso en que peticiones identificas fueran a general la 
+misma respuesta. 
+
+Operaciones comunes:
+-> Todos los recursos detras de nuestra API deben poder ser consumidos mediante peticiones HTTP, preferentemente sus principales (POST, GET, PUT Y 
+DELETE) 
+->Con frecuencia estas operaciones se equiparan con las operaciones CRUD en bases de datos (Create, Read, Update, Delete)
+->Al tratarse de peticiones HTTP, estas deberan devolver con sus respuestas los correspondientes codigos de estado, informando el resultado de las mismas.
+
+Interfaz uniforme
+
+->En un sistema REST, cada accion (mas correctamente, cada recurso) debe contar con una URI (Uniform Resource Identifier), un identificador unico.
+->Esta nos facilita el acceso a la informacion, tanto para consultarla como para modificarla o eliminarla, pero tambien para compartir su ubicacion
+exacto a terceros
+
+Utilizacion de Hipermedios
+
+->Cada vez que se hace una peticion al servidor y este devuelve una respuesta, parte de la informacion devuelta pueden ser tambien hipervinculos de  
+navegacion asociada a otros recursos del cliente. 
+->Como resultado de esto,es posible navegar de un recurso REST a muchos otros, simplemente siguiendo enlaces sin requerir el uso de registros u otra 
+infraestructura adicional. 
+
+Metodos de peticion
+
+Un metodo es una definicion que forma parte del protocolo HTTP, el cual nos sirve para canalizar el tipo de peticion que estoy realizando sobre un 
+cierto endpoint. De esta manera, el metodo, indicando que operacion quiere realizar con dicho recurso. Los principales metodos:
+
+->GET: obtener un recurso -> Receive infomation about an API resourse
+->POST: Crear o añadir un recurso -> Create an API resource
+->PUT: Modificar un recurso -> Update an API resource
+->DELETE: Eliminar un recurso -> Delete an API resource
+
+Principios:
+
+->Una aplicacion RESTful requiere un enfoque de diseño distinta a la forma tipica de pensar en un sistema: lo contrario a RPC. 
+
+->RPC (Remote Procedure Calls,llamadas a procedimientos remotos) basa su funcionamiento en las operaciones que puede realizar el sistema. (acciones,
+usualmente verbos). Ej: getUsuario()
+
+->En REST, por el contrario, el énfasis se pone en los recursos (usualmente sustantivos), especialmente en los nombres que se le asigna a cada tipo
+de recurso. Ej: usuarios
+
+->Cada funcionalidad relacionada con este recurso tendria sus propios identificadores y peticiones HTTP
+
+Ejemplos sobre como declarar correctamente endpoint
+
+Si:
+    ->GET api/perritos
+    ->GET api/perritos/:pid 
+No: 
+    ->GET api/perritos/obtener
+    ->GET api/perritos/obtener/:pid 
+Por qué? GET ya significa obtener, entonces no hace sentido la redundancia con el metodo y el endpoint.
+
+SI:
+    ->POST api/perritos
+NO:
+    ->POST api/perritos/añadir
+
+Por qué? POST ya hace referencia a crear un nuevo perrito, entonces es redudndante el método y el endpoint
+
+api/perritos es perfectamente funcional, sin necesidad de declarar cosas adicionales, entonces podemos reutilizar el endpoint, siempre
+y cuando sean diferentes sus métodos.
+
+SI:
+
+PUT api/perritos/:pid 
+
+NO
+
+PUT api/perritos/actualizar/:pid 
+
+PUT ya hace referencia a una actualización, hay redundancia entre el método y el EndPoint
+
+SI
+
+DELETE api/perritos
+
+NO 
+
+DELETE api/perritos/eliminar
+
+ ¿Por qué? DELETE ya significa eliminar, entonces hay redundancia entre método y endpoint.
+
+POSTMAN: El problema: el navegador solo puede enviar peticiones con metodo GET desde la url (por ello es que podríamos utilizarlo desde
+el navegador sin problema),sin embargo, para poder utilizar el resto de métodos, no será posbile con el navegador.
+
+La solucion es POSTMAN es un software profesional que nos permitira gestionar peticiones simulando ser un cliente. De esta manera rompemos
+la limitante del navegador y podemos probar todos nuestros endpoints.
+
+Metodo POST
+
+Sirve para 'crear' recursos, POST se utiliza para opereaciones donde no necesitamos obtener un recurso, sino añadir uno. Algunos de los casos
+en los que se utilizan son:
+
+->Registrar un usuarios
+->Loguear un usuarios
+->Crear un producto
+->Crear un carrito de compra 
+->Enviar informacion para un correo electronico 
+
+Se apoya del recurso req.body, donde el body representa la informacion que el cliente envia para crear.
+
+Para que nuestro servidor express pueda interpretar en forma automatica mensajes de tipo JSON en formato urlencoded al recibirlos, debemos
+indicarlo en forma explicita, agregando las siguientes linea luego de crearlo:
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+{extended:true} precisa que el objeto req.body contendra valores de cualquier tipo en lugar de solo cadenas. Sin esta linea el servidor
+no sabra como interpretar los objetos recibidos.
+
+Método PUT
+
+Ya vimos como crear un recurso, ahora ¿Como podriamos modificar dicho recurso?
+
+El metodo put sirve para esto. Para poder trabajar con PUT, no solo enviamos el body en el request,sino que ademas mandamos con paranms
+el id,nombre o cualquier identificador para que el servidor sepa especificamente que recurso debe actualizar.
+
+Hay dos formas de actualizar un recurso: actualizar solo los campos requeridos, o bien mandar a actualizar el objeto completo, ambas formas 
+son validas cuando hablamos de actualizacion, y dependera del contexto.
+
+Metodo DELETE
+
+Como bien lo indica el nombre, este metodo lo utilizamos cuando queremos eliminar algun recurso. Aqui no es necesario enviar nada desde el 
+body, sin embargo, si es importante indicar en el req.param el identificador para que el servidor reconozca que recurso debe eliminar.

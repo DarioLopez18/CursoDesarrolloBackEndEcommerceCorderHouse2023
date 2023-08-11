@@ -1,0 +1,125 @@
+Principios de programación BackEnd & principios básicos de JavaScript
+
+->Programacion web
+->Distintas maneras de probar JavaScript
+->Tipos de datos en JavaScript
+
+->Objetivos de la clase:
+    ->Conocer las diferencias entre programación Front End y Back End
+    ->Familiarizarse con las nociones básicas para programar utilizando JavaScript y el MERN Stack
+
+Principios de programación BackEnd
+    ->Programación web  
+        ->Front End
+        ->Back End
+    ->Como probar JavaScript
+    ->Tipos de datos en JavaScript
+        ->Variables en JavaScript
+
+Programación web
+
+¿Qué es el desarrollo web? 
+
+Cuando hablamos de desarrollo web, nos referimos a la construcción y mantenimiento de estos sitios que pueden encontrarse en la World Wide Web(www) y sus 
+redes derivadas. Originalmente éste sólo se basaba en desarrollo de páginas estáticas. Sin embargo, con el paso del tiempo estas fueras requiriendo más
+dinamismo, al punto de desarrollar no sólo páginas web estáticas, sino sitios web completos o incluso aplicaciones web.
+
+Las dos caras de una misma moneda:
+
+Conforme las necesidades del desarrollo web van creciendo, surge la necesidad de comenzar a separar el desarrollo en dos aspectos importantes: 
+FrontEnd y BackEnd
+
+El FrontEnd comprende toda la parte visual de interacción directa con el usuario. Su fin es dar la mejor impresión al usuario sobre la página o aplicación.
+    ->Imagenes
+    ->Colores
+    ->Botones
+    ->Interacciones
+El backend comprende toda la parte lógica y de manejo de información. Es decir, la base lógica de nuestra página o aplicación. El usuario NO sabe lo que hay
+detrás. 
+    ->El almacenamiento de la información
+    ->Los cálculos complejos
+    ->Los servidores donde viven las páginas
+    ->Manejo de la información en general
+
+Mientras que el FrontEnd se centra en la experiencia de usuario,¡Qué esta sea lo más presentable y amigable posible! el backend tiene una estructura interna
+para que todo funcione correctamente.¡Que no lo vea el usuario!
+
+¿FrontEnd vs BackEnd? 
+
+A menudo escuchamos a otras personas decir 'Odio el backend' o 'que aburrido el frontend'. Esto ha polarizado a la comunidad del desarrollo, pensando que el
+mundo sería mejor si alguno de los dos no existiera. 
+¡FALSO! Ambos necesitan el uno del otro para poder estructurar ṕáginas y aplicaciones. De esta manera, podremos resolver los problemas del mundo real con
+soluciones tecnológicas.
+
+Stack MERN:
+
+¿Qué es un Stack? Son ciertas tecnologías que, en conjunto, nos brindarán la posibilidad de Desarrollar sistemas completos, debido a su máxima compatibilidad.
+
+Podríamos decir que es la forma en la que el FrontEnd y el BackEnd hacen las pases, ya que trabajan en conjunto. En este curso trabajaremos sobre el Stack
+MERN.
+
+Mongo DB -> Base de datos no relacional,
+Express JS-> Para crear servidores en NodeJS
+React JS-> librería para desarrollar interfaces de usuario
+Node JS-> entorno de ejecución de JavaScript
+
+Distintas maneras de probar JavaScript
+
+¿Cómo probamos JavaScript?
+
+Cliente web: La utilizamos desde la consola del navegador, no necesitamos instalar nada ya que todo el motor vive en el navegador.
+Node JS: Debemos instalarlo ya que se usa fuera del navegador, por lo que podremos escribir JavaScript desde nuestro computador directamente. 
+
+Cliente web: Se utiliza desde cualquier navegador. Algunos desde comandos que más usarás y verás a lo largo de un debug en cliente web son:
+
+-> console.log('texto') mostrará un texto simple
+-> console.warn('texto') mostrará una advertencia
+-> console.error('texto') mostrará un error
+-> console.clear() limpiará la consola para evitar que se acumule el código
+
+Node JS
+
+cuando trabajamos en backend, no tenemos un navegador, es por ello que se precisa de alguna tecnología que nos permita correr código de JavaScript,
+sin necesidad de abrirlo en el navegador. Ahí es cuando usamos node js, para ello, toca considerar:
+
+-> Node JS levantará un entorno completo para probar funciones
+-> Debe correrse desde un CLI para poder visualizar avances del código
+-> Usualmente usaremos el CLI de visual studio code
+
+Tipos de datos en JavaScript    
+
+Tipo de dato: es el atributo que especifica la clase de dato que almacena una Variable.
+
+Especifica con qué estaremos trabajando, para que la computadora reconozca que operaciones puede hacer con él.
+
+Tipo primitivo: incluyen a las cadenas de texto (String), variable booleanas cuyo valor puede ser true o false (Boolean) y números (number). Además hay
+dos tipos primitivos especiales que son null y undefined. La copia es por valor.
+
+Tipo objeto: incluyen a los objetos (Object), a los array (Array) y funciones.La copia es por referencia.
+
+Tipos de datos en JavaScript:
+    Tipos primitivos:
+        ->String: Cadenas de texto
+        ->number: valores numéricos
+        ->booleans: true/false 
+        ->null: tipo especial, contiene null
+        ->Undefined: tipo especial, contiene undefined
+    Tipos Objetos:
+        ->Tipos predefinidos de JavaScript
+            ->Date (fecha)
+            ->RegExp (expresiones regulares)
+            ->Error (datos de error)
+        ->Tipos definidos por el programador/usuario
+            ->Funciones simples
+            ->Clases
+        ->Arrays
+            ->Serie de elementos o formación tipo vector o matriz. Lo consideraremoss un objeto especial que carece de métodos
+        ->Objetos especiales
+            ->Objeto global
+            ->Objeto prototipo
+            ->Otros
+
+Variables en JavaScript
+
+Una variable es un espacio de memoria apartado por la computadora, para poder guardar un dato. Tal cual como lo dice su nombre, una variable puede cambiar
+su valor si así el programa lo necesita. Ello permite la reutilización de una sola variable, para los casos donde se vaya requiriendo.

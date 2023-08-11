@@ -1,0 +1,175 @@
+Objetivos de la clase:
+
+->Conocer la implementación Router en express
+
+->Implementar un sistema de recursos estáticos
+
+->Comprender el uso de middlewares
+
+->Manejar multer para carga de archivos.
+
+Glosario:
+
+->Código de estado: Código que indica el estaod de la petición en el servidor
+
+->Códigos 1xx: Códigos informativos, sirven para indicar que la petición sigue en configuramos
+
+->Códigos 2xx: Códigos de resolución satisfactoria, indican que salió todo "OK" en la petición.
+
+->Códigos 3xx: Códigos de redirección, indican que tuvo que moverse el recurso.
+
+->Códigos 4xx: Códigos de error, principalmente errores del lado del cliente
+
+->Códigos 5xx: Códigos de error, principalmente errores del lado del servidor.
+
+->Métodos: Indican las diferentes operaciones que podemos hacer con un recursoa
+
+->POSTMAN: Software para realizar peticiones como si fueramos un cliente, donde podemos visualizar resultados y enviar informacion necesaria
+al servidor al realizar una consulta.
+
+
+Express router 
+    ->Archivos estáticos
+        ->Prefijo virtual
+        ->Path absoluto
+    ->Interacción
+
+Express y middleware:
+    ->Tipos de middleware:
+        ->A nivel de aplicación
+        ->A nivel de endpoint
+        ->A nivel de router
+        ->De manejo de errores
+        ->Incorporado
+        ->De terceros
+            ->Multer
+
+Express Router:
+
+En la clase anterior nos encontrábamos con un problema: al ver que había muchas rutas "iguales" que solo diferían en métodos, nos dimos cuenta
+de que el código podría tornarse engorroso.
+
+En la clase anterior solo mostramos un ejemplo con usuarios,¿pero qué pasaría si tuvieramos?
+
+    ->Usuarios
+    ->Productos
+    ->Tickets
+    ->Eventos
+    ->Membresías
+    ->Transportes
+    ->Sucursales
+    
+¿Cuántos métodos atiborados tendríamos en un solo archivo?
+
+Un router en express nos permitirá separar los endpoints "comunes" en entidades separadas que funcionarán como "mini aplicaciones", las cuales
+tomarán peticiones que concuerden con dicho endpoint y así redireccionarse a esa mini aplicación.
+
+De esta manera nuestro código resultará más organizado y las diferentes entidades tendrán asilado el comportamiento interno, como configuraciones
+middlewares,etc.
+
+¿Cómo aplicar un router?
+
+Antes teníamos una carpeta donde vive el proyecto, dentro de una caparte src donde vivirá nuestro código y nuestro servidor dentro.
+
+Ahora agregamos una carpeta "routes" donde vivirán nuestros diferentes routers (APP se queda fuera de routes pero dentro de SRC), la carpeta
+routers va dentro de SRC.
+
+Servicio de archivos estáticos
+
+->Nuestro servidor tiene la posbilidad de alojar recursos que puedan ser visibles para el cliente de manera directa.
+
+->Podemos configurar una carpeta para que el usuario pueda acceder y ver dichos recursos de manera directa sólo con acceder a la ruta donde
+se encuentra ubicada. 
+
+->En este curso y en proyectos profesionales podras encontrar estos archivos en la carpeta "public", haciendo referencia como dice el nombre,
+recursos públicos de facil acceso para el cliente. 
+
+->Los dos casos principales para los cuales encontraras el uso de esta carpeta "public" para archivos estaticos son:
+
+    ->Cuando necesitamos alojar imagenes y servirlas directamente a un cliente
+
+    ->Cuando necesitamos alojar una pagina web en todos sus sentidos: html, css, js.En esta clase haremos una pagina sencilla para mostrar el
+    alcance.
+
+Para poder utilizar los recursos de una carpeta de manera estática, basta con que en el servidor especifiquemos como "express.static" dicha 
+carpeta con la siguiente sintaxis:
+
+app.use(express.static('public'))
+
+indicamos que, todo lo que viva en la carpeta public, podra ser accedido directamente desde la carpeta public. 
+
+Prefijo virtual: Para crear un prefijo virtual (donde el path de acceso no existe realmente en el sistema de archivos) para los archivos servidos
+por express.static, debemos especificar un path de acceso de montaje para el directorio static.
+
+app.use('/static',express.static('public'))
+
+el path que se proporciona a la funcion express static es relativo al directorio desde donde se inicia el proceso node.
+
+Por eso si ejecutamos la aplicacion Express dedsde cualquier otro directorio, es mas seguro utilizar el path absoluto del directorio al que
+se desea dar servicio.
+
+app.use('/static',express.static(__dirname+'public'))
+
+¿Que es un middleware? Seguramente te has dado cuenta de que hemos utilizado mucho la sintaxis app.use ¿Que pasa de manera interna en este 
+punto? Cada vez que utilizamos un app.use estamos utilizando un middleware. Estas son operaciones que se ejecutan de manera intermedia entre la
+peticion del cliente y el servicio de nuestro servidor. 
+
+Hace referencia a un intermediario, siempre se ejecuta antes de llegar al endpoint que corresponde. 
+
+Podemos utilizar un endpoint para: 
+    ->Dar informacion sobre consultas que se estan haciendo (logs)
+    ->Autorizar o rechazar usuarios antes de que lleguen al endpoint (seguridad)
+    ->Agregar o alterar informacion al metodo req antes de que llegue al endpoint (formato)
+    ->Redireccionar segun sea necesario (router)
+    ->En ciertos casos, finalizar la peticion sin que se llegue al endpoint (seguridad)
+
+Los middleware se ejecutan EN ORDEN, eso quiere decir que, si algun middleware depende de que se haya realizado otra operacion ejecutada por un
+middleware previo,los coloquemos en cascada según prioridad
+
+Tipos de middleware
+
+    ->Una aplicacion de express puede utilizar los siguientes tipos de middleware
+        ->Middleware a nivel de aplicacion
+        ->Middleware a nivel de endpoint
+        ->Middleware a nivel del router
+        ->Middleware de manejo de errores
+        ->Middleware Incorporado
+        ->Middleware de terceros
+
+Middleware a nivel de aplicacion:
+
+Este ejemplo muestra una funcion de middleware sin ninguna via de acceso de montaje. La funcion se ejecuta cada vezx que la aplicacion recibe
+una solicitud
+
+const app = express()
+
+app.use(function(req,res,next){
+    console.log('Time: ', Date.now())
+    next()
+})
+
+Middleware de carga de archivos: MULTER 
+
+¿Qué es multer? Es un middleware de terceros, pensado para poder realizar la carga de archivos al servidor.
+
+En ocasiones el cliente necesitará subir una imagen, un video o archivo, segun sea nuestra aplicacion, ello nos lleva a configurar nuestro 
+servidor para soportar estos archivos y poder almacenarlos en donde nosotros le indiquemos.
+
+Al ser de terceros, necesitaremos instalarlo para poder utilizarlo. 
+
+1-Instalar multer
+
+MULTER es una dependencia de terceros, de manera que, al igual que express, necesitaremos instalarlo dentro de nuestro package.json con el 
+comando
+
+npm install multer
+
+Debemos corroborar que se encuentre dentro de las depedencias al mismo nivel que tenemos express instalado.
+
+2- Configurar multer en el proyecto actual:
+
+Una vez que tenemos multer instalado, podemos importarlo en nuestro proyecto y configurarlo donde lo necesitemos (puede ser directamente en 
+nuestro proyecto yo bien se recomienda hacerlo en un archivo al mismo nivel del app llamado "utils")
+
+Contar con uploader externo a app.js,brindara mas dinamismo al momento de utilizarlo, ya que podemos colocarlo en el router que necesitemos y 
+no necesariamente instanciarlo a nivel general. 

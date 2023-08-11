@@ -1,0 +1,101 @@
+Nuevas funcionalidades de los lenguajes de ECMAScript & Programación Sincrónica y asincrónica
+
+Objetivos de la clase
+
+->Conocer las características de ECMAScript
+->Aplicar los conceptos incorporados en el desarrollo backend
+
+ECMAScript 
+    ->ES6
+    ->ES7
+        ->Exponencial **
+        ->Array includes
+    ->ES8 
+        ->object.entries,
+        ->object.values,
+        ->object.keys
+    ->ES9 
+        ->.finally()
+        ->operadores rest y spread
+    ->ES10
+        ->string.trim()
+        ->array.flat(),
+        ->Dynamic import
+    ->ES11
+        ->Operador nullish,
+        ->Variables privadas
+
+ECMAScript definirá los estándares y funcionalidades que tendrá el lenguaje de programación JavaScript, con el fin de que los navegadores se ajusten a ellos 
+y pueda existir una compatibilidad mas controlada.
+
+Proceso de un cambio por ECMAScript
+
+1->Se definen las nuevas funciones que habrá en el lenguaje y se eliminarán las obsoletas
+2->Dichos cambios pasan a una etapa de prueba para corroborar las funcionalidades
+3->Se hace 'Release' de la nueva versión, los navegadores deberán ajustarse a ese nuevo versionado.
+
+ECMAScript 6
+
+Desde ES5 en 2009, hubo un largo periodo de tiempo en el cual no hubo actualizaciones en los estándares del lenguaje. Hasta ECMAScript 6 en 2015, el cual 
+supuso una revolución en el lenguaje debido a sus grandes cambios. La salida de ES6 marcó un antes y un después en la historia, ya que a partir de este 
+se lo comenzó a considerar una implementación 'Moderna'
+
+JavaScript y ES7
+
+¿Que hay de nuevo?
+
+Las principales funcionalidades de este release son:
+
+    ->Se introduce el operador exponencial **, independizándose poco a poco de la librería math
+    ->Manejo de array includes. Este nos permitirá saber si algún elemento existe dentro del arreglo.
+
+JavaScript y ES8
+
+¿Qué hay de nuevo?
+
+Las principales funcionalidades de este Release son:
+
+->Async await para mejor control asíncrono, sobre este ahondaremos más en futuras clases.
+->Objec.entries, Object.values, Object.keys para un mejor control interno sobre las propiedades de un objeto.
+
+JavaScript y ES9
+
+las principales funcionalidades de este release son:
+
+->Resolvedores de promesas con .finally(), para atender una promesa se cumpla o no se cumpla.
+->Mayor control a los objetos con operadores rest y spread (aplicable también a arrays)
+
+nuevas implementaciones con ECMAScript 10 y 11
+
+¿Qué considerar aquí? Muchos de los cambios de estas versiones están estrechamente ligados con otros conceptos que se irán aprendiendo a lo largo del curso.
+Por lo tanto, sólo se hará énfasis en los elementos con los que podemos trabajar a esta altura del curso.
+
+JavaScript y ES10
+
+¿Qué podemos destacar?
+
+->String.trim(): Remueve los espacios innecesarios en una cadena. Sirve para validar cadenas enviadas vacías o eliminar los espacios iniciales y finales.
+->Array.flat(): Remueve anidacioknes internas en arrays para dejar un arreglo plano.
+->Dynamic import: Permite importar sólo los módulos necesarios, ahorrando espacio y memoria.
+
+Dynamic import: uno de los problemas principales de los imports tradicionales es que terminamos importando TODOS los módulos, aún cuando no estamos
+utilizando todos al mismo tiempo.
+
+Con Dynamic import, esto cambia.
+
+Dynamic import permite importar SOLO LOS MÓDULOS que necesito según una situación particular, lo cual permite optimizar la utilización de recursos,
+al pedir a la computadora sólo lo que estaré utilizando-
+
+Es utilizado principalmente en códigos que utilizarán el patrón de diseño Factory
+
+JavaScript y ES11
+
+¿Qué podemos destacar?
+
+Las principales funcionalidades de este release son:
+
+->Operador nullish. Sirve para poder colocar un valor por default a variables que podrían ser nulas, o indefinidas, a diferencia del operador ||, estas
+filtran los falseys
+
+->Variables privadas dentro de las clases, esto permite que algunas variables no sean accesibles desde el entorno de instancia de una clase y solo sea
+utilizada de manera interna

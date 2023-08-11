@@ -1,0 +1,196 @@
+Manejo de archivos en JavasCript & administrador de paquetes NPM
+
+->Archivos sincronos 
+->Manejos de archivos
+->File system 
+->Promesas
+
+Objetivos de la clase: 
+->Utilizar la programacion sincrónica y asincrónica y aplicarla en el uso de archivos.
+->Conocer el módulo nativo de Node js para interactuar con los archivos
+->Conocer la utilizacion de archivos con callbacks y Promesas
+->Conocer las ventajas y desventajeas del FileSystem, así como también con ejemplos prácticos
+
+->Glosario
+
+->Funcion definida: funcion que se declara con un nombre desde el inicio. Usualmente se usan para tareas específicas y no suelen reasignarse.
+
+->Funcion anónima: Función que se declara sin tener un nombre, sino que se asigna a una variable desde el inicio. Se suele utilizar para reasignaciones o 
+para callbacks
+
+->Callback: bloque de código que encapsula una o más instrucciones, para ser utilizadas, en cualquier momento del programa.
+
+->Promesa: operación asíncrona que tiene dos canales de salida: resolverse o rechazarse. Permiten mejor control que los callbacks
+
+->Operación sincrona: operación bloqueante en la cual, una tarea no puede comenzar hasta que haya finalizado la otra tarea.
+
+->Operación asíncrona: Operacion no bloqueante en la cual se pueden iniciar múltiples tareas independientemenete de que no hayan finalizado las tareas previas.
+
+
+Asincronismo:
+    ->SetTimeout
+    ->SetInterval
+Manejo de archivos:
+    ->fs en NodeJS
+        ->fs sincrono
+        ->fs con callbacks
+        ->fs con Promesas
+            ->JSON.stringify
+            ->JSON.parse
+
+Las operaciones síncronas o bloqueantes, nos sirven cuando necesitamos que las operaciones se ejecuten una detrás de otra, es decir, se utiliza cuando
+deseamos que las tareas sean secuenciales, independientemente del tiempo que demore cada operación.
+
+Las operaciones asíncronas o no bloqueantes, nos sirven cuando necesitamos que hayan múltiples tareas ejecutándose, sin tener que esperar a las tareas que ya se
+están ejecutando. Úsalas cuando necesites hacer alguna operación, sin afectar el flujo principal.
+
+setTimeout se utiliza para establecer un temporizador que ejecute una tarea después de un determinado tiempo. Permite entender en un par de líneas la idea del
+asincronismo. 
+
+A diferencia de una operación síncrona, podremos notar como setTimeout inicia su ejecución, y una vez que haya transcurrido el tiempo, veremos el resultado,
+aún cuando el resto de las operaciones hayan terminado.
+
+SetInterval funciona como setTimeout, la diferencia radica en que este reiniciará el conteo y ejecutará la tarea nuevamente cada vez que se cumpla
+dicho intervalo de tiempo. Un timer devuelve un apagador el cual permite detener el intervalo cuando se cumpla cierta operación.
+
+Suele utilizarse mucho para poner tiempos límtes en alguna página para llenar formularios (hay ciertas páginas que te dan un tiempo límite para hacer la
+operación o te botan)
+
+Mas allá de la memoria: manejo de archivos
+
+El problema de persistencia en memoria.
+
+Cuando comenzamos a manejar más información, nos encontraremos con una de las grandes molestias del programador: tener que comenzar desde 0 cada vez que
+el programa termina su ejecución.
+
+Todas las cosas que creamos, movimos o trabajamos desaparecen, ya que solo persisten en memoria, y esta se borra automáticamente al finalizar el programa.
+
+La vida real no te permite eso.
+
+Si se tratara de registrar usuarios para la página web de mi empresa ¡Imagina si tuviera que hacer una actualización de la página!
+
+Al actualizar la pagina (el servidor), necesitaria reiniciarse y todos los usuarios desaparecería. Tendríamos que pedirle a cada usuario que vuelva a 
+registrarse, y a subir su información.
+
+La solución: La primera solución al problema de persistencia en memoria fue guardar la información en archivos. Estos son un conjunto de información que
+podemos almacenar. 
+
+Así, cuando se requiera nuevamente la información podemos leer el archivo que habíamos guardado y recuperar la información, aún si el programa había finalizado.
+
+¡Tu sistema operativo funciona así!
+
+Operating system <- File System ->files  
+                                ->files
+                                ->files
+
+Implementando archivos en nodejs: fs
+
+fs en nodejs
+
+fs es la abreviacion utilizada para FileSystem, el cual, como indica el nombre, es un sistema manejador de archivos que nos proporciona node para poder crear,
+leer, actualizar o eliminar un archivo, sin tener que hacerlo desde 0.
+
+Así, crear un archivo con contenido será tan fácil como escribir un par de líneas de código en lugar de tener que lidiar con los datos binarios y 
+transformaciones complejas y de un nivel más bajo en la computadora.
+
+Contempla que el curso utilizará muchas soluciones ya previamente desarrolladas. La programación se baja en un principio clave: no reinventes la rueda.
+Los módulos a utilizar son soluciones ya proporcionadas por otros desarrolladores, con el fin de concentrarnos en la solución de problemas específicos.
+
+¿Cómo utilizamos el File System de NodeJS en nuestro propio código?
+
+Utilizando fs, fs existe desde el momento que instalamos nodejs en nuestro computador, por lo que para utilizarlo, podemos llamarlo desde cualquier archivo
+que tengamos de nuestro código con la línea
+
+const fs = require('fs')
+
+de ahí en adelante todo el módulo de FileSystem estará contenido en la variable fs. Solo debemos utilizarlo llamando a sus métodos como una clase.Esto 
+podemos hacerlo de 3 formas: Síncrono, con callbacks o promesas.
+
+fs síncrono:
+
+El uso de fs de manera síncrona es bastante sencillo, para ello solo utilizaremos la palabra sync despues de cada operación que queramos realizar.Hay 
+muchas operaciones para trabajar con archivos, pero sólo abarcaremos las principales. Las principales operaciones que podemos hacer con fs síncrono son:
+
+->WriteFileSync = para escribir contenido en un archivo. Si el archivo no existe, lo crea. Si existe, lo sobreescribe.
+
+->readFileSync = para obtener contenido de un archivo.
+
+->appendFileSync = para añadir contenido a un archivo, no se sobreescribe.
+
+->unlinkSync = es el 'delete' de los archivos. Eliminará todo el archivo, no solo el contenido.
+
+->existsSync = corrobora que un archivo exista.
+
+fs con callbacks
+
+->Funciona muy similar a las operaciones síncronas. Sólo que al final recibirán un último argumento que como podemos intuir, debe ser un callback. Según
+lo vimos en las convenciones de callbacks de la clase pasada, el primer argumento suele ser un error.
+Esto permite saber si la operación salió bien o si salió mal. Solo readFile maneja un segundo argumento, con el resultado de la lectura del archivo.
+
+Por ultimo: el manejo con callbacks es totalmente asíncrono, así que cuidado donde se usa.
+
+Las principales operaciones que podemos
+hacer con fs con callbacks son:
+    ✓ writeFile = Para escribir contenido en un archivo. Si el archivo no existe, lo crea. Si existe, lo sobreescribe. Al sólo escribir, su callback 
+    sólo maneja:
+    (error)=>
+    ✓ readFile = Para obtener el contenido de un archivo. Como pide información, su callback es de la forma: (error, resultado)=>
+    ✓ appendFile = Para añadir contenido a un archivo. ¡No se sobreescribe!, al sólo ser escritura, su callback sólo maneja: (error)=>
+    ✓ unlink = Es el “delete” de los archivos. eliminará todo el archivo, no sólo el contenido. Al no retornar contenido, su callback sólo es (error)=>
+
+    Recuerda que los callbacks son peligrosos si necesitas encadenar multiples tareas. Si necesitas hacer operaciones muy complejas con archivos, no uses 
+    callbacks o terminarás en un callback hell
+
+    fs con promesas:
+
+    Ya sabemos trabajar con archivos, ya vimos como trabajarlos de manera asíncrona, ahora viene el punto mas valioso: trabajar con archivos de manera 
+    asíncrona, con promesas. Esto lo haremos con su propiedad fs.promises 
+
+    fs.promises
+
+    Al colocar a nuestro módulo fs el .promises estamos indicando que, la operación que se hará debe ser ejecutada de manera asíncrona, pero en lugar de 
+manipularla con un callback, lo podemos hacer con .then + .catch, o bien con async y await. Los argumentos y estructuras es casi idéntico al sincrono.
+Por lo tanto sus opreaciones principales serán: 
+✓fs.promises.writeFile = Para escribir contenido en un archivo. Si el archivo no existe, lo crea. Si existe, lo sobreescribe.
+✓fs.promises.readFile = Para obtener el contenido de un archivo.
+✓fs.promises.appendFile = Para añadir contenido a un archivo. ¡No se sobreescribe!
+✓fs.promises.unlink= Es el “delete” de los archivos. eliminará todo el archivo, no sólo el contenido.
+
+Manejo de datos complejos con fs.promises
+
+Manejo de datos complejos:
+
+Como ya podras imaginar, no todo son archivos .txt y por supuesto que no todo es una cadena de texto simple. ¿Qué va a pasar cuando queramos guardar el
+contenido de una variable, aún si esta es un objeto? Y si es un arreglo? Normalmente los archivso que solemos trabajar para almacenamiento son los 
+archivos de tipo json. 
+
+Para poder almacenar elementos mas complejos, nos apoyaremos del elemento JSON.stringify() y JSON.parse()
+
+JSON.stringify() Una vez que tenemos el objeto que queremos guardar en el archivo, tenemos que recordar que este no puede guardarse sólo incrustándolo.
+Necesitamos convertirlo a formato json, el cual es un formato estándar de guardado y envío de archivos. 
+
+La sintaxis para hacer conversión es:
+
+JSON.stringify(objetoAConvertir,replacer,'\t')
+
+Ahora entendemos como se convierte un objeto a un JSON, es claro mensionar que JSON. parse representa la operacion contraria. Cuando leemos un archivo, 
+el contenido no es manipulable, así que, para recuperar el objeto que había guardado y no solo una string representativa de el, entonces hay que 
+transformarlo de vuelta, esto se hace con JSON.parse su sintaxis es:
+
+JSON.parse(json_que_quiero_transformar_a_objeto)
+
+Ventajas y desventajas de usar archivos:
+
+¿Por qué usarlos?
+
+->Son excelentes para empezar a aprender persistencia,ya que son muy fáciles de usar
+->Al ser nativo de js, no tenemos que hacer instalaciones externas
+->Es muy facil de manipular dentro o fuera de nuestro programa, además de ser transferible
+
+Desventajas: 
+->Conforme la información crece, nos daremos cuenta que, para querer modificar una sola cosa, necesitamos leer todo el archivo el cual consume recursos
+importantes. 
+->Similar al punto anterior, una vez modificado un dato puntual del archivo, tengo que reescribir el archivo completamente, lo cual es un proceso
+innecesario y pesado cuando la informacion es grande.
+->Al final puede ser peligroso tener toda la informacion en un archivo fácilmente extraible con un drag y drop a otra carpeta.
+

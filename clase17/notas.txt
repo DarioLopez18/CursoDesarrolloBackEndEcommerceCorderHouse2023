@@ -1,0 +1,185 @@
+Cookies, Session & Storage 1
+
+->Cookies
+->Session
+
+Objetivos de la clase:
+
+Conocer el concepto de Cookies,Sessions y Storage.
+
+Integrar los conceptos de manera práctica en nuestro servidor.
+
+Glosario:
+
+->Agreggation: Realizacion de multiples operaciones, generalmente multiples documentos.
+
+->Agreggation pipelines: Consistiran en un conjunto de pasos (stages), donde cada paso corresponderá a una operacion
+a realizar.
+
+->$Count: Cuenta el numero de documentos disponibles dentro de la Stage Actual.
+
+->$Group: Permite agrupar los documentos disponibles en nuevos grupos segun su criterio especificado.
+
+->$limit: Limita el numero de documentos que saldran de dicha stage.
+
+->$lookup: Permiten realizar un "left join" (combinacion de campos), de una coleccion de la misma base de datos
+a los documentos de la stage actual.
+
+$set/$addFields: agregan una nueva propiedad a los documentos que se encuentren en dicha stage.
+
+$skip: Devuelve solo los documentos que se encuentren despues del offset indicado.
+
+$match: devuelve solo los documentos que cumplan con el criterio de busqueda, podemos colocar filtros comunes aqui
+
+$merge: escribe los resultados del pipeline en una coleccion. Debe ser la ultima stage del pipeline para poder
+funcionar.
+
+$mongoose-paginate-v2: es un plugin para mongoose que nos permitira realizar paginaciones eficientes para los
+modelos que nosotros especifiquemos. 
+
+Clientes
+    ->Informacion
+        ->Cookies
+            ->¿Que es?
+            ->Caracteristicas
+            ->Seteo
+                ->get 
+                ->set
+                ->Clear
+    ->Identidad
+        ->Session
+            ->Caracteristicas
+            ->Utilidad 
+
+Cookies: La necesidad de saber informacion del Clientes
+
+Cuando desarrollamos un sitio web, tenemos que contemplar que la forma de interactuar de un cliente 
+suele ser diferente, entonces es importante tener algún recurso para saber información sobre ciertos detalles 
+de información y comportamiento de un cliente, para que el servidor pueda usar eso a su favor.
+
+¿Cómo podemos seguir un rastro de los clientes de nuestro sitio web y poder obtener un poco más de información 
+de contacto y/o de  comportamiento sobre los clientes que nos visitan?  La respuesta: cookies. 
+
+¿Que es una cookie?
+
+Una cookie es un pequeñísimo archivo de texto donde podremos almacenar información dentro del navegador, 
+de manera que pueda viajar entre las peticiones y sirva como un ligero contenedor de información necesaria 
+para poder procesar ciertas peticiones.
+
+Algunos de los datos que se suelen guardar en una cookie son:
+
+Nombres de usuario
+
+IDs de sesiones (que abarcaremos más adelante)
+
+Preferencias de navegación para tu página. 
+
+Rastros que suele dejar un usuario al navegar en la web.
+
+El cliente hace Login -> El cliente pone el fondo de la pagina en modo "oscuro" ->El cliente busca productos
+La cookie almacena el    La cookie almacena:                                      La cookie almacena:
+ID de la sesion          ->ID de sesion                                           ->ID de sesion
+                         ->Preferencias de configuracion en pagina                ->Preferencias de configuracion
+                                                                                  en pagina
+                                                                                  ->Busquedas recientes
+
+Importante:
+
+Las cookies viven en el navegador, por lo que son fácilmente accesibles por múltiples elementos externos.
+
+Por ningún motivo guardamos información sensible en una cookie. Nunca guardamos información de métodos de pago, 
+contraseñas, ni cualquier dato que pudiera comprometer la seguridad del cliente.
+
+Caracteristicas:
+
+->A las cookies se les puede configurar un tiempo de vida. Una vez finalizado el mismo, la cookie se elimina 
+del navegador.
+->Al almacenarse del lado del cliente, el espacio con el que se cuenta es limitado, por lo que se recomienda 
+elegir de forma adecuada lo que se vaya a guardar como cookie.
+->Podemos asignarles claves secretas para poder aumentar la seguridad
+->Viven en el navegador, así que no guardamos datos sensibles
+
+
+->Cookies y local storage son distintos,las cookies son accesibles desde el servidor directamente, mientras que
+el local storage es del navegador, entonces está relacionado con el front. Si el servidor quiere el local storage
+el front debe pasarselo en la query manualmente. 
+
+Comenzando a utilizar cookies:
+
+Partimos de instalar express y el modulo de cookie-parser.
+
+Posteriormente, siguiendo la arquitectura que hemos hecho en proyectos previos, configuraremos nuestro servido.
+Utilizaremos middleware con app.use.
+
+Una cookie debe setearse dentro del flujo de vida de una petición, por lo tanto, llamaremos un endpoint 
+llamado /setCookie donde utilizaremos el objeto res, para poder asignar una cookie al cliente en su navegador. 
+
+Para leer la cookie seteada, utilizaremos el objeto req en el endpoint /getCookies, ya que, como el cliente 
+tiene la cookie en su navegador, deberá enviarla por dicho objeto. 
+
+Además, llamaremos también un endpoint llamado /deleteCookie donde utilizaremos el objeto res, 
+para poder limpiar la cookie asignada al cliente en su navegador. 
+
+¿Que es firmar una cookie?
+
+Como las cookies son almacenadas en el navegador, pueden llegar a ser alteradas mucho más fácilmente que si ésta 
+viviera en el servidor. Es por ello que necesitamos agregar un factor de seguridad para que la cookie se “invalide” 
+en caso de que haya sido modificada.
+
+No podemos evitar que alguien externo altere la cookie, pero sí podemos indicar que, 
+en caso de que la cookie ya no sea exactamente idéntica a la generada, entonces la pase como cookie inválida.
+
+No es necesario instalar algo nuevo, solo configuraremos la inicialización del cookieParser. Esto se conseguirá 
+agregando un secret al momento de la inicialización
+
+ara poder acceder a una signed cookie, éstas ya no estarán disponibles en req.cookies, sino en req.signedCookies,
+ por lo que hay que pensar bien qué cookies corresponderán a qué lado
+
+Si tratamos de acceder a una cookie firmada que fue alterada por alguna razón, al querer acceder a ella solo 
+se devolverá un false. 
+
+Dando identidad al cliente: Session
+
+Recordemos un concepto interesante: La conexion sin estados.
+
+Como sabemos, una de las caracteristicas de nuestra API rest es la conexion sin estado, recordemos que esto 
+significa que el servidor recibe una peticion del cliente y devuelve una respuesta así,sin contexto previo.
+
+El cliente no sabe de donde obtiene la informacion que esta solicitando, y al servidor no le interesa que hará
+el cliente con la informacion que acaba de entregar. 
+
+Entonces, ¿como el servidor sabe del usuario al hacer una peticion?
+
+Esto seguramente nos despierta la incognita: ¿como en un sitio web saben quien son? ¿como se gestionaria todo
+el flujo de una compra si mi servidor trabaja sin estado?
+
+Para resolver estas situaciones, el servidor debe tomar siempre la identidad del cliente que esta haciendo la
+peticion. Es decir, el cliente alimenta al servidor ccon cada peticion con la informacion que necesita procesar. 
+El servidor no almacena nada para si.
+
+Actualmente, el cliente debe enviarnos dicha informacion desde querys, params, body, y cookies.Todo esto 
+enviado desde el front. ¿Y si delegamos algo mas de responsabilidad al back? Vamos a manejar un sistema de sesiones.
+
+El sistema de sesiones permitirá que el servidor tenga almacenada información referente al cliente, 
+con el fin de que éste pueda mantenerse identificado al momento de hacer las peticiones.
+
+¡Finalmente rompemos el anonimato! Una vez que el cliente pase por un proceso de login, podemos procesar esa 
+información para mantener reconocido al cliente y poder brindarle respuestas particulares acorde con su rol en la
+página
+
+Session permite conseguir este almacenamiento de información de cliente. Este podremos utilizarlo a través del 
+elemento req.session.
+
+Algunas características de session son:
+
+La información que se quiera guardar en session se almacena del lado del servidor.
+
+Del lado del cliente, se crea un identificador único para poder acceder a esa información desde el navegador.
+
+Los datos almacenados en session se borran al cerrar la ventana del navegador.
+
+Se utiliza principalmente para guardar los datos de usuario al iniciar sesión..
+
+->Las cookies que se guardan en el lado del navegador se guardan en el disco duro del cliente. 
+
+    

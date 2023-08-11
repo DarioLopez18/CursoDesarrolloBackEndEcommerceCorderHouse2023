@@ -1,0 +1,99 @@
+Principios básicos de JavaScript
+
+->Tipos de datos y variables en JavaScript
+
+->JavaScript y ES6
+
+->Funciones en JavaScript
+
+Objetivos de la clase
+
+    ->Familiarizarse con las estructuras y conceptos fundamentales al programar utilizando JavaScript
+    ->Conocer los nuevos elementos del lenguaje aportados por ES6
+
+Mapas de conceptos 
+
+Principios de JavaScript
+    ->Datos y variables
+    ->ES6
+        ->Let y Const 
+    ->Funciones
+        ->Template y String
+        ->Scopes
+    ->Closures
+
+
+Para pensar:
+
+Una variable es un espacio de memoria apartado por la computadora, para poder guardar un dato -> Verdadero
+
+Una variable no puede cambiar su valor, a pesar de que el programa lo necesite. Por consiguiente, no puede reutilizarse -> Falso 
+
+JavaScript y ES6
+
+¿Qué es ECMAScript? Es un estándar que se encarga de regir cómo debe ser interpretado el lenguaje JavaScript. Con el avance del lenguaje y el crecimiento
+de los navegadores, era necesario establecer un control.
+
+ECMAScript plantea compatibilidades, nuevas funciones, funciones en desuso y demás en cada uno de sus nuevos releases.
+
+Cada nuevo realese (versión) de ECMAScript que sale, se denota por ES+ número de release: ES6,ES7,...,ES11
+
+Algunos cambios importantes
+
+Let y const: Son dos formas de declarar variables en JS, introducidas en ES6 que limitan el ámbito de la vaiable al bloque en que fue declarada (antes de
+ES6 esto no era así.)
+
+Let: un bloque en JavaScript se puede entender como 'Lo que queda entre dos llaves', ya sean definiciones de funciones o bloques if, while, for y loops
+similares. Si una variable es declarada con let en el ámbito global, o en de una función, la variable pertenece al ámbito global o al ámbito de la función
+respectivamente.
+
+Const: 
+
+Al igual que con let, el ámbito (scope) para una variable declarada con const es el bloque. Sin embargo, const además prohibe la reasignacion de valores.
+
+Mutabilidad y const:
+
+->Mientras que con let una variable puede ser reasignada, con const no es posible.
+->Si se intenta reasignar una constante se obtendrá un error tipo TypeError
+->Pero que no se puedan reasignar no significa que sean inmutables.
+->Si el valor de una constante es algo 'Mutable', como un array o un objeto, se pueden cambiar los valores internos de sus elementos.
+
+Funciones en JavaScript
+
+¿Qué es una función? Son bloques de instrucciones que trabajan sobre un scope interno. Pueden encontrarse en su sintaxis básica o en su notación flecha.
+
+La función flecha, permite un return implícito, lo cual permite utilizar instrucciones sin llaves. Esto sólo es posible si la función tiene una instrucción.
+Verás muchas de estas en un ambiente laboral. Si la función flecha sólo tiene un argumento, no es necesario encerrar el parámetro entre paréntesis. Esto
+solo es necesario al utilizar dos argumentos o más.
+
+Scopes
+
+El scope define el alcance de una variable o constante en un cierto contexto.Esto permite utilizar el mismo nombre para diferentes variables sin confundir
+al computador.
+
+El scope global afectará a todo el nivel del archivo en el que trabajaremos, mientras que el scope local afectará a la función o bloque en el que está 
+declarado
+
+Template Strings 
+
+->Funcionan como un superset de una String
+->Permite incrustar información dentro de ella, evitando la concatenación.
+->Reconoce los saltos de línea, para mantener el formato.
+->Pero más importante aún es que no presenta el límite de caracteres de una string normal(Permitiendo hacer estructuras mas complejas como plantillas)
+
+Closures en JavaScript
+
+Una cláusula o closure es una función que puede mantener variables declaradas de manera interna, además de contar con una función que pueda acceder a 
+ambos ámbitos, tanto el suyo como el de su función padre, logrando así un efecto de variable privada.
+
+Este efecto de encapsulamiento se utilizaba con anterioridad debido a la falta de la implementación de las clases en JavaScript, sin embargo, al 
+introducirse las clases, el cambio fue muy notorio, dejando a las closures en desuso, o bien en casos de uso muy limitados e insuficientes para códigos
+enterprise.
+
+Clases
+
+Una clase es una representación de una entidad. Nos sirve para modelar múltiples cosas como: un auto, una persona, o bien cosas mas abstractas: un 
+administrador de archivos, un conector a una base de datos, etc.
+
+Las clases funcionan como moldes, por lo que una vez definida una de estas, podemos crear múltiples objetos con la misma forma y con las mismas 
+funcionalidades. A estas se les llaman instancias.

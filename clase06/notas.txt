@@ -1,0 +1,182 @@
+Administrador de paquetes- NPM
+
+->Node js
+->Modulos nativos
+->NPM
+->Instalaciones globales y locales
+
+Objetivos de la clase:
+
+->Repasar que es Node JS y su uso en el backend
+->Entender la diferencia entres un módulo nativo y uno de terceros
+->Conocer la función de NPM y el proceso de instalación de dependencias
+->COnoceer el proceso de actualización de dependencias.
+
+Glosario:
+
+->Archivo: Secuencia de información que permite ser almacenada en algún disco, resolviendo persistencia en memoria.
+->Persistencia en memoria: Modelo de almacenamiento que solo persiste a lo largo del programa, si el programa termina o es reinicia, la información se 
+pierde.  Usualmente son arrays y objetos.
+->Persistencia de archivos: Modelo de almacenamiento utilizando archivos a partir de un FyleSystem, previniendo la pérdida de información al reiniciar
+un programa.
+
+->fs: abreviación para fileSystem, que el módulo interno de node js para trabajar con archivos.
+
+->Sufijo sync: se utiliza al frente de las operaciones de fs para indicar que el proceso será asíncrono y, por lo tanto, bloqueante.
+->fs.promises: se utiliza para indicar que las operaciones de archivos deben realizarse como una promesa y,por lo tanto, no bloquentes, se manejan con
+asyn await o con .then y .catch
+
+->Modulos nativos de NodeJS
+    ->fs
+    ->crypto
+    ->http
+    ->path
+->NPM ->Package.json->dependencias->instalado/versionado->instalaciones globales/locales
+
+Node js->Sobre el  corazón de nuestros proyectos, Node JS no es sólo un módulo o una librería para trabajar. Sino que es un desarrollo completo sobre el cual
+viven y se ejecutan nuestros programasa de js.
+
+Surgio de la necesidad de ejecutar de ejecutar javascript fuera del navegador, y ha crecido hasta convertirse en uno de los elementos principales del  
+desarrollo web
+
+Cuenta con el mismo motor v8 de google chrome, el cual le permite convertir código máquina para poder ser procesado correctamente.
+
+Además, cuenta con muchas funcionalidades internas del mimsmo lenguaje js gracias a sus ajustes con ECMAScript
+
+
+Node js fue pensado de manera primara para backend, lo cual significa que su desarrollo se basó pensando en este en primera instancia. Su sistema de 
+desarrollo basado en eventos, le permite al desarrollador construir aplicaciones ligeras, rápidas e incluso en tiempo real.
+
+Esto sin obviar que el soporte de esta maravilla tecnológica se basa en utilizar y procesar javascript, el cual cuenta con infinidad de funciones y 
+estructuras que permiten resolver diferentes problemas dia con dia.
+
+Modulos nativos de js
+
+Conforme necesitamos programas mas complejos, necesitamos operaciones mas complejas y conforme necesitamos operaciones mas complejas,necesitamos
+herramientas mas útiles. 
+
+Es por eso que,desde que instalamos node js en nuestro computador, contamos ya con una serie de modulos nativos (que ya vienen dentro de el),para poder
+resolver este tipo de tareas de manera eficiente y sin tener que reprogramar todo (no reinventar la rueda)
+
+Modulos nativos en NodeJS
+    ->fs
+        ->Módulo utilizado para manejo de archivos
+        ->Sirve para manejar otro modelo de persistencia
+    ->crypto
+        ->Permite hacer operaciones de encriptación y cifrado para información sensible
+        ->Sirve para mejorar la seguridad de los datos
+    ->Http:
+        ->permite crear un servidor básico bajo el protocolo http
+        ->Sirve para crear nuestro primer servidor de solicitud/respuesta
+    ->path 
+        ->Permite el manejo correcto de rutas 
+        ->Sirve para evitar ambiguedad al trabajar con rutas.
+
+Recuerda que utilizamos soluciones de terceros para hacer nuestro trabajo mejor. Utilizar un módulo que nos permita solucionar un problema previo, permite
+concentrarnos en el problema actual.
+
+Manejando módulos de terceros: NPM
+
+¿Qué es NPM? NPM refiere a las siglas 'Node Package Manager', el cual refiere a un manejador de paquetes de Node. Este permite que la comunidad de 
+desarrolladores puedan crear sus propios módulos, para poder subirlos a la nube y así otros desarrolladores puedan utilizarlos.
+
+Para el trabajo de paqueterías, tendemos un archivo en nuestro proyecto llamado package.json
+
+¿Qué es package.json? Es un archivo que generamos dentro de nuestros proyectos, el cual contendrá distintas especificaciones del mismo, cosas como:
+    ->El nombre de tu proyecto.
+    ->La versión de tu proyecto
+    ->Algunos scripts para correr el proyecto
+    ->¿De qué depende el proyecto?
+
+Dependencias: Cuando nuestro proyecto necesita utilizar dependencias de terceros a partir de npm, se añade un nuevo campo a nuestro package.json
+llamado 'Dependencies' el cual contendrá los módulos que tenemos instalados en ese proyecto  y, por lo tanto, indica que el proyecto necesita de esas 
+dependencias instaladas para poder correr correctamente.
+
+Para trabajar con dependencias necesitamos: 
+    ->Tener un proyecto vacío para trabajar
+    ->Correr el comando npm init 
+    ->Correr el comando npm install nombre_del_modulo
+    ->Utilizar el módulo instalado
+
+Paso 1: tener un proyecto vacío 
+    ->Nuestros proyectos deben ser entornos aislados que no obstruyan con otros proyectos. De manera que necesitaremos tener una carpeta vacía
+
+Paso 2: Correr el comando npm init
+    ->El comando init permitirá crear un package.json dentro de la carpeta donde estés. Asegurate de estar dentro de la carpeta en la que trabajarás.
+    ->Este nos preguntará por las especificaciones como:
+        ->nombre
+        ->version
+        ->descripcion
+        ->etc 
+    ->Finalmente se nos generara un package.sjon con las especificaciones definidas
+Paso 3: Correr el comando npm install
+    ->Una vez generado nuestro package.json, con el comando npm instal nombre_del_modulo podremos hacer la instalacion del módulo que necesitaremos.
+    En este ejemplo instalamos moment el cual sirve para manejar fechas y horas de manera eficiente.
+    ->Una vez instalado, se generará una carpeta node_modules (donde vivirá moment),y se agregara la dependencia de moment al package.json
+Paso 4:Utilizar el módulo
+    ->Una vez que todo ha sido instalado, podemos importar el módulo de la misma manera que lo hacemos con nuestros módulos nativos.
+
+
+Instalaciones globales e instalaciones locales
+
+¿Global o local?Instalar una dependencia de manera local significa que ese módulo instalado pertenecerá y se utilizará sólo dentro de ese proyecto.Ello
+implica que, si quisiera utilizar la misma dependencia en otro proyecto, tendría que volver a hacer la instalacion, ya que no son compartidas
+
+npm install modulo_a_instalar
+
+Por otra parte, instalar una dependencia de manera global implica instalar el módulo para todos los proyectos, evitando la necesidad de instalar cada 
+vez que hagamos un proyecto nuevo. Para instalar de manera global, solo colocamos la flag -g
+
+npm install -g modulo_a_instalar
+
+Lo malo de las instalaciones globales:
+
+Desventajas de una instalacion global: Si instalamos una dependencia global, estamos delimitando a todos nuestros proyectos a utilizarla con la versión
+instalada, esto quiere decir que, si instale mi dependencia global en su version 1.0.0 todos los proyectos utilizarán esa versión.
+
+
+¿Y si la dependencia se actualiza mas adelante a su versión 2.0.0 y quiero utilizar sus últimas características, que pasará con todos los proyectos que
+corrían sólo con la versión 1.0.0? Se vuelven obsoletos (deprecated) y hay que actualizar el código de todos estos lo cual supone un problema muy engorroso.
+
+Versionada de dependencias: 
+
+Como cualquier programa, este no suele quedarse estático en una unica versión. Cada vez que hacemos un cambio a nuestro código, estamos cambiando la versión
+del mismo. 
+
+Pasa lo mismo con lo que instalamos, todas las dependencias de terceros están regidas por versiones.
+
+Una versión define puntos específicos en los que el código tiene ciertas características, ciertas sintaxis, ciertas funcionalidades e incluso ciertos 
+errores.
+
+Manejo de versiones en NPM
+
+2.0.4
+
+Las versiones se basan en 3 elementos básicos. 
+
+->Versiones mayores (primer digito): Hace referencia a cambios grandes, tanto que ya no son compatibles con otras versiones.
+->Versiones menores (segundo dígito): hace referencia a cambios en ciertas características y funcionalidades que no afecten a versiones anteriores,
+es decir, podemos actualizarlo sin afectar la estructura del proyecto.
+->Parches(último digito): Hace referencia a bugfixes o manejos de defectos del código actual. No se está cambiando nada estructuralmente hablando, solo 
+estamos arreglando cosas.
+->Política de actualizaciones de dependencias
+
+Operadores para actualizar versiones.
+
+En nuestro package.json podemos colocar operadores que permitan tener un mejor control de las versiones:
+
+El operador ^ sirve para instalar la versión menor más alta, esto significa que no actualizará a una versión mayor, 
+protegiendo así a nuestro código de incompatibilidades.
+
+El operador ~ sirve para instalar solo los parches, lo cual significa que no altera versiones menores,solo las ligeras correciones
+de bug del código.
+
+Si no colocamos ninguno, se instalará la versión exacta que hayamos colocado
+
+Comandos para actualizar en NPM
+
+npm outdated en un comando que leerá las dependencias instaladas en nuestro package.json y según el operador que hayamos colocado,
+nos indicará que es lo que conviene. También nos indica cual es la última versión encontrada en internet, en caso de que nos interese.
+
+Para poder llevar a cabo la actualización, utilizaremos el comando npm update, el cual se encargará de realizar los cambios que
+indicamos.

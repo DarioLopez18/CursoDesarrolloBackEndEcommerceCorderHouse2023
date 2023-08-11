@@ -1,0 +1,212 @@
+->CRUD EN MONGO DB
+
+->CRUD
+->Filtroa
+->CRUD-UD
+
+Comprender el concepto de CRUD
+
+Aplicar el CRUD a la base de datos en mongo DB.
+
+Glosario:
+
+Base de datos: Recopilacion organizada de datos sobre la cual se pueden aplicar operaciones de lectura, creacion, 
+modificacion o eliminacion de datos.
+
+Modelo relacional: gestion de datos que consiste en representar estos como tablas relacionadas con el fin de brindar
+una estructura solida entre ellos.
+
+Modelo no relacional: Gestion de datos flexible que sustituye a las tablas relacionadas, por colecciones, garantizando
+facilidad y dinamismo en el manejo de los datos.
+
+MongoDB: Base de datos no relacional basada en documentos que ofrece un modelo de escalabilidad, gestion de consultas
+e indexacion profesional. 
+
+mongod--dbpath<name>: comando mongo que permite inicializar un servidor apuntando a una carpeta personalizada para 
+trabajar la base de datos
+
+mongo (en CLI): comando para inicializar el CLI de mongo en nuestra terminal. 
+
+
+CRUD:
+
+    ->Create
+    ->Read 
+        ->Opt
+            ->filtros
+                ->Filtros de query
+                ->Proyecciones
+                ->Sorts
+                ->Skips
+                ->Limits
+    ->Update 
+    ->Delete
+
+CRUD es un acronimo que hace referencia a las cuatro operaciones fundamentales de una base de datos:
+
+Create: crear un dato, insertarlo en la base de datos.
+
+Read: leer un dato, mostrarlo al cliente
+
+Update: actualizar un dato, cambiar su informacion interna
+
+Delete: Eliminar un dato, removerlo de nuestra coleccion. 
+
+Comandos de apoyo utiles:
+
+-show dbs : Muestra las bases de datos existentes.
+
+-use <db name>: Crea una nueva base de datos (en caso de no existir) y se posiciona sobre ella
+
+-db: Muestra en qué base de datos estamos posicionado.
+
+-show collections: Muestra todas las colecciones disponibles en la base de datos posicionada.
+
+-db.createCollection(name): Crea una colección en la base de datos posicionada.
+
+-db.dropDatabase(): Elimina la base de datos actual.
+
+-db.collection.drop(): Elimina la colección de la base de datos posicionada.
+
+-db.collection.insertOne(doc) : Agrega un nuevo documento a la colección seleccionada.
+
+-db.collection.insertMany(docs): Agrega múltiples documentos a la colección seleccionada (dado un arreglo de 
+documentos).
+
+-db.collection.ﬁndOne(opt): Busca un elemento que cumpla con los criterios de búsqueda (opt), devuelve
+el primer documento que cumpla con dicho criterio.
+
+-db.collection.ﬁnd(opt):Devuelve todos los documentos que cumplan con dicho criterio.
+
+-db.collection.ﬁnd(opt).pretty(): Añadido para hacer más presentables los resultados de un ﬁnd().
+
+Conteo de datos:
+
+Los comandos de conteo para determinar el numero de documentos de una coleccion son:
+
+-db.collection.estimatedDocumentCount() Cuenta el estimado más próximo al número de documentos según su metadata.
+
+✓ db.collection.countDocuments(opt) Cuenta los documentos que cumplan con el criterio deﬁnido en las opciones (opt).
+
+opt: options. Agregando opciones.
+
+En muchas consultas encontraremos el elemento (opt), esto hace referencia a las opciones de filtros de busqueda 
+que podemos realizar al momento de buscar un valor, la sintaxis de un opt es:
+
+{propiedad:valor}
+
+Busquedas complejas: filtros
+
+Filtros:
+
+Las busquedas del mundo real no siempre requieren que un valor sea igual a otro. En ocasiones necesitamos que 
+sea menor, mayor, diferente de, entre otras cosas.
+
+Los filtros pueden agregarse dentro de los elementos de criterio opt con ayuda del simbolo $, ademas, podemos 
+agregar mas de un filtro para asegurarnos que el documento se ajuste a criterios muy especificos. 
+
+db.coll.find({key:{$operator:val}})
+
+Operadores para filtros query:
+
+$and : Realiza operación AND -> sintaxis: {$and: [ {},{} ] }
+
+$or : Realiza operación OR -> sintaxis: {$or: [ {},{} ] }
+
+$lt : Coincide con valores que son menores que un valor especiﬁcado.
+
+$lte : Coincide con valores menores o iguales a un valor especiﬁcado.
+
+$gt : Coincide con valores mayores a un valor especiﬁcado.
+
+$gte : Coincide con valores mayores o iguales a un valor especiﬁcado.
+
+$ne : Coincide con valores que no son iguales a un valor especiﬁcado.
+
+$eq : Selecciona los documentos que son iguales a un valor especiﬁcado.
+
+$exists : Selecciona los documentos según la existencia de un campo.
+
+$in : Selecciona los documentos especiﬁcados en un array. sintaxis: {key:{$in: [array of values] } }
+
+$nin : Coincide con ninguno de los valores especiﬁcados en un array.
+
+$size : Coincide con el número de elementos especiﬁcados.
+
+$all : Coincide con todos los valores deﬁnidos dentro de un array.
+
+$elemMatch : Coincide con algún valor deﬁnido dentro del query.
+
+db.coll.distinct( val ) devuelve un array con los distintos valores que toma un determinado campo en los
+documentos de la colección.
+
+db.coll.ﬁnd({doc.subdoc:value}) Se utiliza para ﬁltrar subdocumentos.
+
+db.coll.ﬁnd({name: /^Max$/i}) ﬁltra utilizando expresiones regulares
+
+Proyecciones:
+
+En ocasiones no necesitamos toda la informacion de un documento. Si tenemos un documento con 100 propiedades, 
+podremos definir solo las propiedades que queremos obtener.
+
+Una proyeccion se incluye al momento de hacer una busqueda, (siempre como segundo argumento), y es el equivalente
+a decirle a la base de datos: "solo necesito esto"
+
+Asi,podremos decir db.users.find({},{name:1}) lo cual indica que: el campo name es el unico que necesitamos obtener
+por parte del documento, ahorrandonos espacio y complejidad en el resultado. 
+
+Sort:
+
+Sirve para poder hacer un ordenamiento de la informacion. El ordenamiento se define con 1 o -1 para hacer el 
+ordenamiento ascendente o descendente respectivamente.
+
+La sintaxis es: 
+
+db.collection.ﬁnd().sort({val_A:1,val_B:-1})
+
+La razón por la cual podemos agregar múltiples valores de ordenamiento, es en caso de que dos documentos
+tengan el mismo valor, podamos ordenarlos bajo otro criterio.
+
+Skip y Limit:
+
+Skip: omite el numero de documentos indicados: podemos usarlo cuando hagamos paginaciones, cuando necesitemos 
+ignorar un valor que sabemos que es innecesario, etc.
+
+Su sintaxis es: .skip(offset)
+
+Limit: Limita el número de documentos devueltos. De manera que podamos hacer diferentes niveles de paginación 
+(Tu página puede devolver 5 elementos por página, o bien 100, tú decides).
+
+Su sintaxis es: .limit(num)
+
+CRUD-UD
+
+Update y Delete
+
+Las operaciones Update se pueden realizar de dos maneras:
+
+    Actualizar un documento, o actualizar múltiples documentos.
+    
+    ✓ db.collection.updateOne(query,update,option)
+    
+    ✓ query: sirve para ﬁltrar qué elementos actualizar (usa los ﬁltros iguales al ﬁnd)
+
+    ✓ update: Apartado para indicar qué actualizar de los documentos que cumplen con el ﬁltro. Update tiene
+    sus propios operadores como $set, $unset, $inc, $rename, $mul, $min, $max
+
+    ✓ option: Opciones a tomar en cuenta para la actualización (como upsert, que inserta el valor en
+    caso de que el documento a actualizar ni siquiera exista).
+
+    ✓ db.collection.updateMany(query,update,options) Actualiza múltiples documentos que cumplan con el criterio.
+
+CRUD : D (Delete)
+
+Nuestra última operación es para eliminar datos, si bien hay muchas variantes de una eliminación, sólo veremos 
+las dos principales.
+
+✓db.collection.deleteOne({key:val}) : Elimina sólo el primer elemento que cumpla con el criterio, se usa
+principalmente para encontrar identiﬁcadores especíﬁcos. Se recomienda no utilizar si somos
+conscientes de que el valor a buscar no es repetido.
+
+✓db.collection.deleteMany({key:val}) : Elimina todos los documentos que cumplan con el criterio, se usa
+cuando sabemos que más de un valor va a contar con ese valor y necesitamos hacer una limpieza general.

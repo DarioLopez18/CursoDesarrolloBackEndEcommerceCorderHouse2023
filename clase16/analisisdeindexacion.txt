@@ -1,0 +1,72 @@
+consigna: Se hará revision de un conjunto de schemas. Analizar e identificar las propiedades de un documento y 
+definir en cuales deberiamos utilizar una indexacion. La decision debe ser tomada segun el contexto de cada 
+schema.
+
+Justificar en cada caso por que se tomo dicho indice como una posible opcion. Recuerda que las respuestas de 
+esta actividad pueden llegar a ser subjetivas, segun la justificacion que brindemos en cada caso.
+
+PD: Recuerda que puede haber mas de un indice por documento. 
+
+//Contexto: Schema de estudiante de un curso en específico (grade refiere a la calificación de dicho curso)
+
+{
+    first_name:String,
+    last_name:String,
+    email:String,
+    telephone:String,
+    age:Number,
+    grade:Number,
+    gender:String,
+    address:String
+}
+
+En este caso, cuando busquemos un estudiante con estos atributos lo haríamos por su email, ya que es un campo que
+identifica a cada estudiante univocamente.
+
+Otro posible caso podría ser el numero de telefono, que tampoco se repite.
+
+//Contexto: Schema de ticket de compra generado desdeun ecommerce
+
+{
+    buyer_id : ObjectId,
+    total_ammount:Number,
+    products:Array,
+    destination_address:String,
+    destination_postal_code:String,
+    comments:String,
+}
+
+En este caso un buen index seria buyer_id ya que es un identificador unico, sino podria combinarse buyer_id con 
+por ejemplo destination_address
+
+//Contexto: Schema de usuario de una aplicación deentregas y envíos
+
+{
+    first_name:String,
+    last_name:String,
+    email:String,
+    telephone:String,
+    age:Number,
+    gender:String,
+    address:String,
+    postal_code:String
+}
+
+En este caso nuevamente buenos candidatos serian el email,principalmente y como segunda opcion el telephone.
+
+//Contexto: Schema de un libro correspondiente a unnegociodelibrería
+
+{
+    title:String,
+    description:String,
+    prize:Number,
+    reviews:Array,
+    rating:Number,
+    images:Array,
+    author:ObjectId,
+    num_of_pages:Number
+}
+
+La forma en la que general identificamos un libro es por el autor y el titulo, en este caso serian los indices 
+elegidos.
+

@@ -1,0 +1,266 @@
+Motores de plantillas
+
+Websockets 
+
+->Websockets
+
+->Sockets en Express con Socket.io
+
+Objetivos: 
+
+->Comprender la diferencia entre HTTP y Websockets
+
+->Configurar un servidor Websockets dentro de nuestro servidor Express
+
+->Integrar Websockets en nuestras plantillas
+
+Glosario
+
+->Plantilla: Documento HTML con marcas reemplazables para poder ser reemplazadas por un motor de plantillas. 
+
+->Motor de plantillas: Librería desarrollada para tomar un HTML y reemplazar datos en este para generar un 
+efecto de dinamismo en la pagina
+
+->Pagina estatica: Pagina que no requiere cambios de elementos ni interaccion compleja con el usuario
+
+->Handlebars: motor de plantillas basado en la marca {{}}
+
+->Layout: marco de disposicion que requiere Handlebars para poder encapsular en un solo cuerpo html todas las vistas
+de diferentes plantillas
+
+->Express-handlebars: paquete o modulo de npm para conectar handlebars con Express
+
+-> Websockets -> Sockets en Express: Socket.io -> configuracion y uso 
+
+Websocket: es un protocolo basado en TCP para poder establecer esa conexion entre el cliente y el servidor, justo
+como lo sabemos, es el mismo objetivo que cubre HTTP
+
+->Cuando llegamos a este punto? Seguramente nos planteamos: 
+
+->Por que es necesario aprender otro protocolo?
+->Cuando debo considerar un protocolo y cuando otro?
+->¿Sirve realmente el protocolo Websocket? En todas las paginas web veo http o https, nunca Websocket
+
+¿Que hace que Websocket se destaque? 
+
+->A pesar de que Websocket y HTTP son protocolos como lo mencionamos anteriormente, websockets tiene una caracte
+ristica muy importante: su protocolo TCP establece dos endpoints de comunicacion: a cada endpoint se lo conoce
+como Sockets
+
+->El contar con estos dos sockets permitirá establecer una comunicacion bidireccional entre el cliente y el 
+servidor. La comunicacion bidireccional implica:
+
+    ->Que el cliente pueda obtener recursos del servidor cuando lo solicite (como en http)
+    ->Que el servidor pueda entregar informacion al cliente sin necesidad de que el cliente haga una peticion.
+
+Caso practico: Sistema de subastas en linea
+
+El gran problema de las subastas en linea: los negocios por internet son algo de los mas comun, sin embargo no 
+toda la compra-venta de productos se da de la manera habitual del carrito de compra, algunos productos suelen ser 
+sometidos a un proceso de subasta, donde los compradores deben realizar "pujas" constantes con el fin de ver quien
+ofrece la mayor cantidad de dinero.
+
+Suena como un proceso comun, pero computacionalmente hablando representa un asunto de cuidado: actualizar la 
+informacion en tiempo real. 
+
+Planteamiento del problema: Sabemos que, segun el protocolo bajo el cual hemos estado trabajando, el cliente debe
+hacer una peticion de informacion al servidor, para que este le responda algo. 
+
+Si el comprador 1 hace una puja ¿Como podrá ver el estado de su puja? Tendria que actualizar la pagina, para que
+se haga nuevamente la peticion al servidor con el estado actualizado.
+
+Ahora, si hay 100 compradores haciendo pujas constantemente ¿que tan consistente será la información? ¿Que tan
+eficiente es que tenga que estar refrescando la pagina cada vez que quiera ver el nuevo estado de la subasta?
+
+Primer intento: HTTP Long Polling 
+
+El HTTP Long Polling consiste en que el cliente vuelve a hacer una peticion tan pronto como reciba una respuesta
+del servidor, es decir, bombardea al servidor constantemente de peticiones para emular respuestas en "tiempo real"
+
+Sin embargo, se concluyó que esta operacion es costosa en recursos y, al final, un tanto lenta para considerarse
+en "tiempo real".
+
+Solucion optima: Websocket
+
+Websocket es un protocolo excelente para esta situacion ya que:
+
+->El cliente no tendra que estar actualizando la pagina constantemente 
+
+->En cuanto el servidor reciba una actualizacion de una nueva puja, actualizara a todos los clientes conectados,
+permitiendo dar informacion en tiempo real.
+
+->Una vez termina la subasta, el socket se cierra y el servidor deja de notificar innecesariamente al cliente. 
+
+¿Como funciona websockets?
+
+Primero el cliente tiene que enviar una solicitud HTTPS llamada HANDSHAKE (apreton de manos). Este apreton de manos
+sera un "acuerdo" o "contrato" de confianza para que el servidor pueda actualizar al cliente sin que este se lo 
+pida.
+
+El servidor recibe la peticion HANDSHAKE y procede a "responderle el saludo", a esto se le llama abrir conexion.
+
+A partir de este punto, el canal queda abierto de manera bidireccional, por lo que el cliente se puede comunicar con
+el servidor cuando quiera y viceversa.
+
+La comunicacion es "persistente" hasta que alguno de los dos lados decida cerrar el canal de comunicacion. 
+
+El protocolo websockets: principios
+
+->Websocket permitio por primera vez acceder a una web de forma dinamica en tiempo real
+
+->Basta con que el cliente establezca una conexion con el servidor, que se confirma mediante el apreton de manos
+o websockets protocol HANDSHAKE
+
+->Con el, el cliente envia al servidor todos los datos de identificacion necesarios para el intercambio de informacion
+
+->El canal de comunicacion queda "abierto" tras el HANDSHAKE
+
+->El servidor puede activarse por si mismo y poner toda la informacion a disposicion del cliente, sin que este 
+tenga que pedirselo. Si dispone de nueva informacion, se lo comunica al cliente, sin necesidad de recibir una 
+solicitud especifica para ello.
+
+->Las notificiones push de las paginas webs funcionan segun este principio. 
+
+Ejemplo de uso de websockets:
+
+->Chats: ya sea en paginas de asistencia tecnica, en redes sociales, o en algun juego es necesario que el canal
+se de en tiempo real
+
+->Paneles de "noticias importantes" en el sitio de noticias: es importante que el usuario reciba las noticias 
+mas actuales, para asi tener la primicia (que en estos tiempos es muy dificil por la rapidez de la informacion)
+
+->Actualizacion en bolsa: el tiempo real en transacciones en la bolsa de valores es crucial, los usuarios no 
+pueden perder tiempo mientras una pagina se recarga para poder ver los ultimos resultados. a
+
+->Juegos en tiempo real: cada movimiento, mensaje, cada ataque o cada accion de un jugador, debe verse reflejada
+para otros jugadores inmediatamente, por lo que las respuestas rapidas y en tiempo real son inmediatas.
+
+->Plataformas compra venta como ebay: si tenemos contemplado algun sistema de subastas, donde el usuario necesite
+tomar accion rapida para la resolucion de compra venta de algun producto, entonces necesitamos respestas inmediatas
+y visibles para todos. 
+
+Websocket comparacion con HTTP:
+
+->Http: son peticiones al servidor que esperan una respuesta.
+->Websocket: Es un canal abierto entre servidor y cliente. Como una llamada telefonica.
+
+->Http: Se solicita informacion y se espera una respuesta. Ej: un formulario login.
+->Websocket: Se usa para comunicacion en tiempo real. Ej: un Chats
+
+->Http: Se usa para consumir APIS y recursos web
+->Websocket: Se usa para escuchar informacion en tiempo real.
+
+->Http: Protocolo HTTP
+->Websocket: es un protocolo de comunicacion
+
+->http: comunicacion en una sola via 
+->Websocket: conexion de doble via
+
+->http: no sustituye a websockets
+->websockets: no sustituye a http. 
+
+
+Como podras notar, se menciona que http no es reemplazo de Websocket, ni Websockets es reemplazo de http. Ambos
+son complementos que se pueden utilizar en conjunto, con el fin de hacer sistemas completos y complejos.
+
+Sockets en express: Socket.io
+
+Socket.io
+
+->Es una biblioteca de javascript para poder implementar sockets 
+
+->Debido al funcionamiento que hemos visto en clase. Socket.io debe instanciarse tanto del lado del cliente
+como del lado del servidor.
+
+->Permite utilizar todo el potencial mencionado en los websockets, y cuenta con una API casi identica para cliente
+y servidor. 
+
+->Socket.io utiliza principalmente el protocolo websockets proporcionando la misma interfaz
+
+->Se puede usar como un contenedor para websockets aunque proporciona muchas mas funciones, incluida la transmision
+a multiples sockets, el almacenamiento de datos asociados con cada cliente y E/S asincronas
+
+->Se puede instalar con npm. 
+
+Caracteristicas:
+
+->Fiabilidad: Las conexiones se establecen incluso en presencia de:
+    ->proxies y balanceadores de carga
+    ->firewall personal y software de antivirus
+
+->Soporte de reconexion automatica: A menos que se le indique lo contrario, un cliente desconectado intentará
+siempre volver a conectarse, hasta que el servidor vuelva a estar dispnible.
+
+->Deteccion de desconexion: se implementa un mecanismo de hearbeat, lo que permite que tanto el servidor como el 
+cliente sepan cuando el otro ya no responde.
+
+->Soporte binario: se puede emitir cualquier estructura de datos serializable, que incluye:
+    ->ArrayBuffer y Blob en el navegador
+    ->ArrayBuffer y Buffer en node js
+
+Instalacion y configuracion de Socket.io
+
+1-Tener listo un servidor express
+
+Para poder trabajar con websockets en express, necesitamos un servidor para que trabajen en conjunto, de manera
+que levantaremos un servidor express como ya lo conocemos.
+
+Utilizaremos la misma estructura de plantillas trabajadas con Handlebars, de manera que debemos contar con la
+arquitectura.
+
+La estructura inicial debera ser como lo indica la imagen.
+
+src
+    public
+    routes
+    views
+app.js 
+utils.js
+
+2-Realizar las instalaciones
+
+Una vez que tenemos la estructura de carpetas inicial, realizamos la instalacion de nuestros elementos cruciales
+para trabajar con websockets
+
+express: nuestro servidor principal
+express-handlebars: para las plantillas donde colocaremos el socket del lado del cliente
+socket.io: para trabajar con websockets, tanto para el cliente como para el servidor 
+
+3-Configurando nuestro servidor express con handlebars + socket.io: 
+
+    ->utils.js (solo valido si trabajamos con type module)
+    ->views.router.js 
+    ->index.handlebars
+
+4-Agregar Js a la carpeta public y a nuestro index.handlebars
+
+Creamos un index.js en la carpeta de public y la referenciamos en nuestro index.handlebars
+
+Como comentamos el cliente tambien necesita instanciar su socket, entonces lo colocamos en un script
+
+El script del socket siempre debe estar antes que el script propio
+
+5-Levantar nuestro socket del lado del cliente en index.js
+
+una vez que hemos importado socket.io desde nuestro script del lado del cliente, podemos probar utilizando en
+nuestro archivo index.js
+
+en este archivo index.js es donde tenemos el socket/cliente para conectar el socket/servidor
+
+El cliente y el servidor deben de estar ligados. De momento tenemos a socket.io del lado del cliente listo para
+conectarse a nuestro servidor, sin embargo, aun no hemos enseñado a nuestro servidor a escuchar el HANDSHAKE, 
+por parte del cliente, para ellos tenemos nuestro socketserver (normalmente se conoce como io)
+
+tomaremos nuestro sockets server y lo pondremos a "escuchar conexion" Una vez que un socket se conecte, podemos
+reconocerlo y tomar alguna acción a partir de ello. 
+
+¿Que acaba de pasar? El cliente se conecta a su Websocket al socketServer (socketserver.on significa que 
+está escuchando porque algo pase),entonces, cuando socketServer escucha que hay una nueva conexion, muestra en 
+consola "Nuevo cliente conectado". Es por eso que aparece el mensaje en la consola de vs.
+
+Una vez que el socket se ha conectado, podemos escuchar eventos de dicho socket, a partir de la sintaxis indicada.
+socket.on("nombre del evento",callback con la data que me hayan enviado)
+
+Este "evento a escuchar" tiene un identificador que el cliente tiene que colocar en su lado para poder enviar
+informacion. Podemos tener multiples sockets.on para tener asi que escuchar eventos diferentes.
+

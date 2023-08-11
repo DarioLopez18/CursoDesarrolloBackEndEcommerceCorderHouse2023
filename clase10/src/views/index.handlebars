@@ -1,0 +1,27 @@
+<div>
+    <h1>Hola, {{user.name}} {{user.last_name}}! Que gusto verte de nuevo!</h1>
+    <h2>Tus datos personales son:</h2>
+    <p>Edad: {{user.age}}</p>
+    <p>Email: {{user.email}}</p>
+    {{#if isAdmin}}
+        {{#each food}}
+        <div>
+            <p>Producto: {{this.name}}, Precio:  {{this.price}}</p>
+        </div>
+        {{/each}}
+    {{else}} 
+        <p>No tienes permiso para ver la lista de alimentos</p>
+    {{/if}}
+</div>
+
+<script src="/js/index.js"></script>
+
+<!--
+    Nota que, como la vista index estará dentro del main layout, ya no es necesario crear una pagina para poder mostrar la vista.
+
+    Generamos un saludo, indicando que al entrear a dicha ruta se mostrará el nombre, nota como dejamos name entre dos llaves, haciendo referencia
+    a que es una variable reemplazable al momento de hacer el preprocesamiento.
+
+    Podemos colocar cuantas variables necesitamos al momento de renderizar. 
+
+ -->

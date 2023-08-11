@@ -1,0 +1,153 @@
+Router: Middleware de Express que permite agrupar endpoints comunes para contar con una arquitectura mas limpia
+API: "Contrato" formado de definiciones y protocolos, con el fin de comunicar componentes.
+REST: Sistema de estilo arquitectural para sistemas distribuidos de hipermedios, con el fin de comprender la estructura de los datos a trabajar.
+Middleware: Funciones que se colocan en el medio de la ruta y el callback (req,res) que se ejecutan antes de comenzar a procesar la peticion.
+Multer: Middleware desarrollado para poder realizar la carga de archivos dentro de las peticiones, con el fin de que el cliente pueda manejar
+archivos como imagenes, videos o documentos, dentro de una peticion.
+
+Motor de pĺantillas:
+    ->Handlebars
+        ->Configuracion en Express
+        ->Estructuras
+            ->Express Router
+            ->JS y Css
+    ->EJS
+    ->PUG
+
+Motor de plantillas:
+
+Uno de los primeros problemas del desarrollo web: dinamismo
+
+Imagina que eres pionero en el mundo del desarollo web y quieres desarrollar una pagina que peuda dar la bienvenida al usuario que la visite.
+
+Al momento que escribes tu nombre:
+
+<h1>¡Bienvenido, Mauricio!</h1>
+
+¡Muy emocionante! pero hay un problema: el nombre es estático.
+
+¿Como afrontar los datos estaticos en una pagina web?
+
+Tu y tu equipo de desarrolladores contemplan el problema presentado anteriormente y presentan diferentes propuestas:
+
+    ->Crear n paginas web para cada usuario (descartado)
+    ->Cambiar el mensaje por : "Bienvenido usuario",menos ameno,pero mas generico (descartado)
+    ->Llamar a todos Mauricio y pedir que reconozcan su nuevo nombre (super descartado ¿quién propuso esto?)
+    ->Desarrollar codigo que antes de renderizar la etiqueta <h1></h1> delimitar una marca reemplazable por algun dato con el estilo:
+
+
+    <h1>¡Bienveido,{{nombre}}!</h1>
+
+¿Como afrontar los datos estaticos en una pagina web?
+
+Entonces, una vez que eligen esta idea, comienzan a desarrollar lo que sera un "Motor de plantillas". De manera que podamos colocar:
+
+    <h1>¡Bienveido,{{nombre}}!</h1>
+
+luego una vez teniendo el nombre a mostrar simplemente reemplazar {{nombre}} por ese nuevo dato.
+
+¡Ahora todo lo que necesitamos que sea dinamico podemos marcarlo como "reemplazable" y el motor de plantillas reemplazara el dato antes de 
+mostrarlo al cliente. 
+
+Motor de plantillas como solucion de dinamismo en sitios web
+
+Existen multiples motores de plantillas tales como: Handlebars, EJS, PUG. Cada uno de estos tiene una sintaxis diferente, diferentes reglas
+de reemplazo de plantillas, aunque son muy similares en su funcionamiento. Podemos crear sitios webs completos basados en un motor de plantilla,
+con el fin de brindar una experiencia ligeramente mas dinamica, en comparacion de una pagina web estatica. 
+
+En este curso profundizaremos en el uso de Handlebars
+
+Motor de plantillas vs Librerias y Framework frontend 
+
+¿Aun utilizamos un motor de plantillas? Seguramente, a lo largo de las ultimas diapositivas pensaste: "¿En serio tanto lio para dinamizar un 
+saludo de bienvenida?, eso es cosa de nada con React, Angular,etc"
+
+Sin embargo, tenemos que comprender que hay diferentes contextos para cada tecnologia. Es por ello que, cuando escuchamos a un desarrollador 
+¿Que es mejor entre X e Y? casi siempre escuchamos un "depende" 
+
+La diferencia principal: nivel de dinamismo
+
+Nivel de dinamismo: 
+    ->El nivel de dinamismo refiere a que tanta interaccion tiene el usuario con la pagina, ademas de que tan constantes son los cambios Y
+    renderizados los elementos de una pagina
+
+    ->Tener definido el nivel de dinamismo que tendra nuestro proyecto, nos permmitira focalizar la tecnologia a utilizar.
+
+    ->Que una herramienta sea poderosa, no significa que sea la solucion para todo. 
+
+¿Que elegir segun el nivel de dinamismo? 
+
+->Para "Landing Pages", donde el dinamismo es casi nulo, salvo los tipicos formularios del final. Podemos utilizar JavaScript puro para resolver
+este problema, ya que no necesitamos un nivel de complejidad alto en una tarea sencilla.
+
+->Cuando hablamos de un website comenzamos a viajar por diferentes paginas, tal vez nos interesa mostrar algunos productos para catalogo o 
+un sistema de login sencillo para pedidos. Entonces el dinamismo aumenta, aqui podriamos utilizar mas un motor de plantillas. Dinamismo 
+controlado, pero aun no con el nivel de complejidad para considerarse una webapp.
+
+->Finalmente, entrando a una webapp llegamos con un nivel de dinamismo mas fuerte de la web. Como el nombre lo indica, es una aplicacion en tu
+navegador. Aqui los elementos cambian constantemente son muy manipulables, requieren respuestas mas rapidas y salen y entran al DOM constantemente
+
+El motor de plantillas ya no es muy util en este punto debido a que Handlebars necesita renderizar la plantilla por completo para poder
+mostrar la informacion actualizada, esto afecta al DOM y da la impresion de un sitio lento.
+
+Es entonces cuando un Framework o libreria como react, vue, permiten aprovechar el Virtual DOM para performance, o como angulas que tiene su
+propio mecanismo de renderizado interno. 
+
+Recuerda que puedes llegar al mismo resultado utilizando cualquier tecnología, pero evidentemente en algunos casos será demasiado compleja 
+una tarea si elegimos mal, o en otros casos nos daremos cuenta de que el proyecto era “demasiado sencillo” para la herramienta utilizada y tal
+vez “no era necesario hacer tanto”. ¡Irás aprendiendo sobre la práctica!
+
+Handlebars
+
+Es un motor de plantillas pensado para agregar un nivel medio de dinamismo en una página web.
+
+Dicho motor preprocesa el html que queremos renderizar, reconociendo el patrón {{variable}}, de manera que buscará un objeto que cuente con
+dicha propiedad para poder sustituir, dando el efecto de dinamismo
+
+No está pensado para elementos de cambios constantes, esto debido a que los cambios siguen requiriendo una renderización completa del DOM.
+
+No solo se trata de reemplazar
+
+si bien las plantillas permiten "reemplazar" una marca por un dato dinámico. Handlebars nos proporciona tambien la capacidad para poder realizar
+estructuras de decision o de repeticion.
+
+Cuando utilicemos una estructura, lo haremos con el simbolo # dentro de dos llaves como:
+
+{{#if condicion}}
+
+no admite expresiones,solo booleanos
+
+asimismo podemos realizar ciclos tambien utilizando la palabra reservada para Handlebars "each"
+
+como se menciono necesitaremos colocar el hashtag para poder ejecutar un ciclo: {{#each elemento iterable}}
+
+Mover lógica de vistas a un Router
+
+Una forma de trabajar correctamente con plantillas, conforme crece nuestro sitio web, es colocar las vistas como si fueran un Router mas 
+dentro de nuestro servidor. 
+
+La gran diferencai esta en que los demas router suelen responder con res.send. Mientras que los router de vistas siempre deben responder
+con res.render.
+
+Ademas este router se colocara en la ruta raiz y no será necesario ser precedido por /api
+
+agregando js y css
+
+Tu carpeta public aún sirve, a pesar de que ahora las paginas las tenemos en views no significa que public deje de sernos útil. Recuerda que,
+al ser un servicio de archivos estaticos, nos puede servir para almacenar informacion de todo tipo de facil acceso. Eso quiere decior que 
+tambien podemos guardar archivos de js y css con el fin de poder referenciarlos desde cualquier punto del servidor, en este caso, desde cada
+una de nuestras vistas, crearemos una carpeta css y una carpeta js para almacenar nuestros archivos
+
+usar los archivos js es sencillo, solo basta con crear su etiqueta debajo de la plantilla a utilizar. Procura que siempre sea debajo, así 
+aseguramos que el archivo pueda leer el DOM correctamente
+
+Usar los archivos css requieren mas pasos
+
+Ya que la referencia a los archivos css esta en el head, pero nuestras plantillas viven en el body, no podemos importarlo desde nuestra 
+plantilla, sino que tenemos que hacerlo desde el main.layout
+
+La pregunta es: ¿Como dinamizar estas vistas? La clave esta en que el mismo link de importacion de css sea una clave para reemplazar en plantilla
+
+Pero el app.render debe cambiar. Cuando necesitamos mostrar la vista, dicha vista deberá estar asociada con un css, el cual siempre colocaremos
+como "style" en el objeto de sustitucion. 
+El style debe tener el mismo nombre que el archivo incluyendo su extension. 

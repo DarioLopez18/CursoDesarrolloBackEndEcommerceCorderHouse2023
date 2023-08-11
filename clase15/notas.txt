@@ -1,0 +1,148 @@
+Mongoose & primera practica integradora
+
+->Clientes de bases de datos
+
+->DBaas
+
+->Mongoose en NodeJS
+
+->Comprender los diferente clientes para utilizar mongo db
+
+->Comprender una DBaaS y configurar MongoDB Atlas para conectarse con NodeJS
+
+->Utilizar moongose para comenzar a utilizar MongoDB a nivel aplicacion.
+
+CRUD: Acronimo que hace referencia a las cuatro operaciones fundamentales de una base de datos 
+
+(Create, Read, Update, Delete)
+
+Proyecciones: Una proyeccion se incluye al momento de hacer una busqueda.
+
+Sort: sirve para poder hacer un ordenamiento de la informacion. La sintaxis es: 
+db.collection.find.sort({val_a:1,val_b:-1})
+
+Skip: omite el numero de documentos indicados. Su sintaxis es: skip(offset)
+
+Limit: Limita el numero de documentos devueltos. Su sintaxis es: limit(num)
+
+DBaas 
+    ->Mongo DB Atlas
+
+Cliente de base de datos    
+    ->Tipos de clientes
+        ->Clientes CLI 
+        ->Clientes GUI 
+        ->Clientes WEB
+        ->Clientes de aplicacion
+            ->Mongoose
+                ->Instalacion y configuracion
+                ->Complementando el CRUD
+
+Clientes de bases de datos: 
+
+Cada vez que accedemos a una base de datos para realizar una operacion CRUD, nosotros nos convertimos en clientes 
+de esa base de datos.
+
+Podemos ser diferentes tipos de clientes para acceder a la misma base:
+
+    ->Cliente CLI
+    ->Cliente GUI
+    ->Cliente WEB 
+    ->Cliente APP
+
+Clientes GUI:
+
+    ->Es el cliente que puede conectar a la base de datos desde un programa grafico destinado a ello. El cliente 
+    GUI por excelencia para trabajar con MongoDB es MongoDB Compass.
+
+    ->Este suele instalarse al momento que instalamos mongo, pero en caso de no contar con este, puedes descargarlo.
+
+Cliente APP:
+    ->Este será nuestro fuerte: poder acceder a la base de datos desde nuestra aplicacion, permite utilizarla a 
+    partir de código, a partir de un contexto. 
+
+    ->Esto significa que, una vez que se encuentra correctamente configurada la APP, no dependeremos tanto de 
+    meter mano manualmente, pues nuestro programa sabrá en qué momento realizar las operaciones CRUD. 
+
+Cliente WEB:
+    ->Cuando conseguimos tener nuestra base de datos en la nube, podemos conectarnos a un servidor en la web 
+    para poder analizar datos y realizar las operaciones desde cualquier computadora. 
+
+    Es de los modelos mas utilizados, debido a que no es necesario contar con una computadora especifica (segun sean
+    los permisos)
+
+    El cliente WEB por excelencia para MongoDB es atlas, ademas de fungir como DBaas
+
+DBaaS: Database as a Service
+
+El problema: Escalabilidad y factibilidad
+
+¿Que pasa cuando tu empresa va creciendo y necesitmaos almacenar cantidades enormes de informacion?
+
+¿Estamos dispuestos a dedicar cuartos completos con bases de datos?
+
+¿Que tan elevados pueden llegar a ser los costos de tener que comprar infraestructura fisica para el negocio?
+
+¿Y si hubiera forma de "rentar" dicho espacio a un proveedor,para solo preocuparme en los aspectos mas superficiales
+de la base de datos?
+
+La solución: DBaaS
+
+Utilizar una base de datos como servicio, implica el poder hacer uso de una base de datos, sin preocuparse en tener
+que gestionar todo el aspecto fisico que este implica, es decirm podemos rentar espacios para poder alojar la 
+informacion de nuestra base de datos.
+
+Todos los aspectos fisicos, de mantenimiento y seguridad de dichas bases de datos, vienen gestionados por el 
+proveedor de dicho servicio.
+
+Amanzon,google, microsoft, mongo atlas son algunos ejemplos. 
+
+Ventajas del modelo DBaaS
+
+->Se elimina la infraestructura fisica de la ecuacion ahorrando en costos, ya que el proveedor es responsable 
+del mantenimiento y la disponibilidad de los sistemas. Los usuarios son responsables de sus propios datos.
+
+->Ahorro de costos generalizado. Ademas de prescindir de las inversiones fisicas, con DBaaS se puede tener 
+menos personal dedicado a esta tarea, ahorrar energia y aprovechar mejor el espacio fisico. 
+
+->Escalabilidad. Con DBaaS podemos acceder a diferentes tarifas basadas principalmente en el rendimiento 
+deseado y nuestras necesidades. 
+
+->Personal Cualificado. A traves de DBaaS se accede a expertos en bases de datos que se encargaran de todas las
+tareas de mantenimiento, actualizacion, seguridad y gestion. 
+
+Mongo DB atlas
+
+Caracteristicas destacadas:
+
+->Automatizacion: Una manera facil de crear, lanzar y escalar aplicaciones en mongo db.
+
+->Flexibilidad: DBaaS con todo lo necesario para las aplicaciones modernas.
+
+->Seguridad: Varios niveles de seguridad disponibles.
+
+->Escalabilidad: Gran escalabilidad sin interrumpir la actividad.
+
+->Alta disponibilidad: implementaciones con tolerancia de errores y autoreparacion predeterminada. 
+
+->Alto rendimiento: el necesario para cargas de trabajo exigentes. 
+
+->Ejecucion:
+    ->Puesta en marcha de un cluster en segundos
+    ->Implementaciones replicadas y sin interrupcion
+    ->Total escalabilidad: escalado horizontal o vertical sin interrumpir la actividad.
+    ->Revisiones automaticas y actualizaciones simplificadas.
+
+->Proteccion y seguridad:
+    ->Autenticacion y cifrado
+    ->Copias de seguridad continuas con recuperacion temporal
+    ->Supervision detallada y alertas personalizadas.
+
+Mongoose
+
+Mongoose es un ODM Object Document Mapping, el cual nos permitira definir esquemas para poder gestionar 
+colecciones y documentos entre una aplicacion de Node JS y una base de datos en Mongo DB.
+
+Una vez que comprendamos que mongo db permite gestionar documentos de manera similar a un objeto.Ademas, Mongoose
+nos permitira conectar la base de datos gestionada desde mongo atlas con el fin de poder mantener la gestion de la
+base de datos en la nube.

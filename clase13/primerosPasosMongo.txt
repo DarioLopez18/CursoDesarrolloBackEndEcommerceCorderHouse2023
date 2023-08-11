@@ -1,0 +1,13 @@
+->Una vez que corrobores que mongo esta instalado en computador, a partir del cliente CLI, crear un base de datos
+"estudiantes"
+
+->Agregar 5 estudiantes diferentes con los campos "nombre","apellido","curso","correo". Puede utilizar db.colecction.insertMany()
+->Una vez agregados, listar a los estudiantes de dicha coleccion y corroborar su persistencia.
+
+->use estudiantes
+
+->db.createCollection('estudiantes')
+
+->db.estudiantes.insertMany([{nombre:"Dario",apellido:"Lopez",curso:"3K9",correo:"darioangellopez38@gmail.com"},{nombre:"Anahi",apellido:"Navarta",curso:"",correo:"anahiNavarta@gmail.com"},{nombre:"Micaela",apellido:"Bicocca",curso:"11",correo:"micabicocca@gmail.com"},{nombre:"Dario",apellido:"Lopez",curso:"3K9",correo:"darioangellopez38@gmail.com"},{nombre:"Dario",apellido:"Lopez",curso:"3K9",correo:"darioangellopez38@gmail.com"}])
+
+->db.estudiantes.find()

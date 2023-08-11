@@ -1,0 +1,144 @@
+Servidores web & express avanzado
+
+->Protocolo http
+->Servidores con express js
+->Objeto request
+
+Objetivos de la clase:
+
+->Entender el protocolo http
+->Aprender a crear un servidor utilizando el módulo nativo http
+->Crear un servidor de express
+->Profundizar sobre las peticiones get de un servidor express
+
+Glosario
+->Nodejs: entorno de ejecucion de javascript. Es el corazón de nuestro programa.
+->Módulo: conjunto de funciones y objetos que permiten resolver un problema específico.
+->Modulo nativo: modulos que vienen incluidos al instalar node js, no requieren instalacion, solo importacion.
+->Package.json:archivo de especificacion del proyecto, sirve para contener las dependencias a utilizar en el proyecto.
+->Dependencias: todos los modulos externos a nuestro proyecto que necesitamos instalar para poder correr el proyecto.
+->Dependencia local: dependencias que solo viven dentro de nuestro proyecto.
+->Dependencia global: dependencias que se instalan a nivel del computador y pueden ser utilizadas en cualquier proyecto.
+->Version: cada una de las etapas y cambios que representa nuestro proyecto, pueden ser mayores, menores o parches.
+
+
+Protocolo http
+    ->Servidores
+        ->Express js
+            ->npm init -y
+            ->npm install express
+            ->object request
+                ->req.params
+                ->req.query
+
+Entendiendo el protocolo HTTP:
+
+HTTP (Hyper Text Transfer Protocol) refiere a un protocolo, el cual es un conjunto de reglas que permite la comunicacion entre dos
+o mas sistemas. Gracias a este protocolo, las computadoras saben comunicarse entre si y permiten comunicarse con servidores para la 
+obtencion de datos.
+
+¿Como funciona? Se basa en un modelo peticion-respuesta. De manera que el cliente tiene que hacer una peticion de informacion,
+entonces el servidor se encarga de responder con dicha informacion.
+
+Cliente -> http request ->Server 
+Cliente <- http response <- Server 
+
+¿Que tipo de información pedimos?
+
+Al hacer una peticion, estamos solicitando al servidor ciertos recursos, estos pueden ser:
+
+->Un dato como un nombre, fecha, edad.
+->Informacion mas compleja como una imagen, un video.
+->Un archivo para descargar.
+->Incluso una pagina web completa.
+
+Maneja multiples peticiones: Cuando programamos nuestro servidor, lo hacemos para escuchar peticiones, la pregunta es: ¿De quien
+escuchar las peticiones? 
+
+¡Bajo su configuracion por defecto, un servidor puede escuchar multiples peticiones de multiples clientes al mismo tiempo!
+
+El cliente siempre es quien hace las peticiones (request) y el servidor siempre sera quien hace las respuestas (responses).Cuando
+hacemos frontend, somos clientes. En este curso te toca ser el servidor y devolver respuestas!
+
+Instalar nodemon de manera global:
+
+Como nuestro servidor se mantiene escuchando todo el tiempo, los cambios que hagamos en el codigo no se reflejan automaticamente.
+Por ello tenemos que apagar el servidor y levantarlo nuevamente. Solo así podemos visualizar los cambios que hagamos en el código
+así sea un simple console.log
+
+Nodemon nos permitirá reiniciar automáticamente el servidor en cuanto detecta que hay cambios en el código. De esta manera, podemos
+concentrarnos en el código, sin tener que realizar el reinicio manual cada vez que queremos ver algo. Para instalarlo basta con correr
+el comando:
+
+npm install -g nodemon
+
+¿Que es express js? Es un framework minimalista que permitirá desarrollar servidores mas complejos. Este nos facilitará:
+
+->Utilizar diferentes rutas para las peticiones
+->Mejorar la estructura de nuestro proyecto
+->Manejar las funcionalidades mas complejas y utilizacion de middlewares.
+
+Preparacion de un proyecto de Express js
+
+Paso 1: npm init -y
+
+Express no es nativo de nodejs, por lo tanto necesitaremos primero contar con un package.json para gestionar las dependencias a  
+instalar.
+
+Una vez que tenemos el package.json en nuestra carepta, podemos continuar instalando las dependencias.
+
+Paso 2: npm install express
+
+Procedemos a instalar de manera local express.js. Al ejecutar este comando, notaremos como se genera una carpeta node_modules,
+que es donde se encuentra almacenado express.
+
+A partir de este punto, ya contamos con la estructura elemental instalada, el resto es mas 'flexible'
+
+Paso 3: Estructurar el proyecto:
+
+Se recomienta tener una carpeta src, donde vivirá todo nuestro código, dentro del cual crearemos un archivo con el nombre
+
+app.js
+
+Finalmente, el archivo app.js ya puede importar la dependencia instalada de express js, ya sea por commonjs:
+
+const express = require('express')
+
+o bien por module (recodar colocar el type module en package.json)
+
+Objeto request 
+
+Al hacer endpoints, hasta el momento solo hemos utilizado el elemento res, el cual utilizamos para responder una peticion. 
+
+Sin embargo, estos ultimos ejercicios hemos dejado de lado el req, que viene a su izquierda. Ahora abordaremos que utilidad
+tiene y como podemos utilizarlo.
+
+El objeto req cuenta con tres propiedades: req.query, req.params, req.body
+
+req.params: Se utiliza cuando necesitamos obtener elementos dinamicos desde la ruta que esta llamando al cliente. Para poder 
+definir un "parámetro" dentro de la ruta a trabajar, basta con colocar el simbolo de dos puntos : antes del parametro, de esta
+manera express reconoce que queremos que ese elemento sea dinámico.
+
+req.query: Como su nombre lo indica, query refiere a las multiples consultas que se pueden hacer a un determinado endpoint,basta con que coloquemos
+en la url coloquemos el simbolo ?, entonces express reconocera que hay que meter informacion al objeto req.query para poder utilizarlo en el 
+endpoint.
+
+Cunado buscamos algo en nuestro navegador,llamamos a un endpoint haciendo un determinado query.
+
+Importante
+
+Conforme incrementa el dinamismo en las urls, es importante configurar el servidor para que reciba datos complejos desde la url, por ello hay que
+utilizar la línea: app.use(express.urlencoded({extended:true}))
+
+La linea anterior permitirá que el servidor pueda interpretar mejor los datos complejos que viajen desde la URL, y mapearlos correctamente en el 
+req.query
+
+¿Que diferencia hay con params?
+
+La principal diferencia que hay entre req.params y req.query, es que en req.query puedo meter la cantidad de consultas que yo desee, ya que las querys
+no vienen inmersas en la ruta, sino que son un elemento aparte.
+
+Así, si desconozco el numero de cosas que se van a consultar en mi ruta, la mejor opcion es utilizar queries, mientras que, si solo necesito un 
+numero especifico y reducido de parametros, habria que optar por params. 
+
+Al final, no hay una mejor que otra, sirven para casos diferentes e incluso podemos utilizar ambas en la misma consulta.
